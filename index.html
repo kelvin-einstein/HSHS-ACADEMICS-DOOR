@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HSHS Academics Door – Past papers, notes and academic resources in one place." />
+  <title>HSHS Academics Door | Past Papers & Notes</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">📚</span>
+        <span class="logo-text">HSHS Academics Door</span>
+      </a>
+
+      <nav class="nav" id="mainNav">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="#papers" class="nav-link">Past Papers</a>
+        <a href="#notes" class="nav-link">Notes</a>
+        <a href="#subjects" class="nav-link">Subjects</a>
+        <a href="#" class="nav-link">Upload</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-outline" id="loginBtn">Login</button>
+        <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <h1 class="hero-title">Your Gateway to Academic Excellence</h1>
+      <p class="hero-subtitle">
+        Access past papers, high-quality notes, and study resources — all in one clean, fast platform.
+      </p>
+
+      <div class="search-box">
+        <input 
+          type="search" 
+          id="globalSearch" 
+          placeholder="Search past papers, notes, subjects..." 
+          autocomplete="off"
+        />
+        <button class="search-btn" id="searchBtn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" id="statPapers">0</span>
+          <span class="stat-label">Past Papers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="statNotes">0</span>
+          <span class="stat-label">Notes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="statSubjects">0</span>
+          <span class="stat-label">Subjects</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Access -->
+  <section class="quick-access">
+    <div class="container">
+      <h2 class="section-title">Quick Access</h2>
+      <div class="cards-grid" id="quickAccessCards">
+        <!-- Cards will be injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Papers -->
+  <section class="featured" id="papers">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Recent Past Papers</h2>
+        <a href="#" class="view-all">View all →</a>
+      </div>
+      <div class="papers-grid" id="featuredPapers">
+        <!-- Papers will be injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Notes Section -->
+  <section class="notes-section" id="notes">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Popular Notes</h2>
+        <a href="#" class="view-all">View all →</a>
+      </div>
+      <div class="notes-grid" id="popularNotes">
+        <!-- Notes will be injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Subjects -->
+  <section class="subjects" id="subjects">
+    <div class="container">
+      <h2 class="section-title">Browse by Subject</h2>
+      <div class="subjects-grid" id="subjectsGrid">
+        <!-- Subjects injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">📚</span>
+        <strong>HSHS Academics Door</strong>
+        <p>Empowering students with quality academic resources.</p>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4>Resources</h4>
+          <a href="#">Past Papers</a>
+          <a href="#">Notes</a>
+          <a href="#">Subjects</a>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Contact</a>
+          <a href="#">Upload Guidelines</a>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 HSHS Academics Door. Built with care for students.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
