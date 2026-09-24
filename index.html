@@ -9,6 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    // Prevent flash of wrong theme
+    (function() {
+      const t = localStorage.getItem('hshs-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 </head>
 <body>
   <!-- Header -->
@@ -24,10 +31,15 @@
         <a href="#papers" class="nav-link">Past Papers</a>
         <a href="#notes" class="nav-link">Notes</a>
         <a href="#subjects" class="nav-link">Subjects</a>
-        <a href="#" class="nav-link">Upload</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="comments.html" class="nav-link">Comments</a>
       </nav>
 
       <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <span class="icon-sun">☀</span>
+          <span class="icon-moon">☾</span>
+        </button>
         <button class="btn btn-outline" id="loginBtn">Login</button>
         <button class="btn btn-primary" id="signupBtn">Sign Up</button>
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
@@ -39,6 +51,7 @@
 
   <!-- Hero Section -->
   <section class="hero">
+    <div class="hero-particles"></div>
     <div class="container hero-content">
       <h1 class="hero-title">Your Gateway to Academic Excellence</h1>
       <p class="hero-subtitle">
@@ -46,10 +59,10 @@
       </p>
 
       <div class="search-box">
-        <input 
-          type="search" 
-          id="globalSearch" 
-          placeholder="Search past papers, notes, subjects..." 
+        <input
+          type="search"
+          id="globalSearch"
+          placeholder="Search past papers, notes, subjects..."
           autocomplete="off"
         />
         <button class="search-btn" id="searchBtn" aria-label="Search">
@@ -82,7 +95,7 @@
     <div class="container">
       <h2 class="section-title">Quick Access</h2>
       <div class="cards-grid" id="quickAccessCards">
-        <!-- Cards will be injected by JS -->
+        <!-- Cards injected by JS -->
       </div>
     </div>
   </section>
@@ -95,7 +108,7 @@
         <a href="#" class="view-all">View all →</a>
       </div>
       <div class="papers-grid" id="featuredPapers">
-        <!-- Papers will be injected by JS -->
+        <!-- Papers injected by JS -->
       </div>
     </div>
   </section>
@@ -108,7 +121,7 @@
         <a href="#" class="view-all">View all →</a>
       </div>
       <div class="notes-grid" id="popularNotes">
-        <!-- Notes will be injected by JS -->
+        <!-- Notes injected by JS -->
       </div>
     </div>
   </section>
@@ -134,20 +147,21 @@
       <div class="footer-links">
         <div>
           <h4>Resources</h4>
-          <a href="#">Past Papers</a>
-          <a href="#">Notes</a>
-          <a href="#">Subjects</a>
+          <a href="#papers">Past Papers</a>
+          <a href="#notes">Notes</a>
+          <a href="#subjects">Subjects</a>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <a href="community.html">Charts & Stats</a>
+          <a href="comments.html">Comments</a>
+          <a href="#">Upload</a>
         </div>
         <div>
           <h4>Support</h4>
           <a href="#">Help Center</a>
           <a href="#">Contact</a>
-          <a href="#">Upload Guidelines</a>
-        </div>
-        <div>
-          <h4>Legal</h4>
           <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
         </div>
       </div>
     </div>
