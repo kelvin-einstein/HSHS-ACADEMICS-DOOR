@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HSHS Academics Door – Chat with fellow students." />
+  <title>Chat | HSHS Academics Door</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    (function() {
+      const t = localStorage.getItem('hshs-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">📚</span>
+        <span class="logo-text">HSHS Academics Door</span>
+      </a>
+
+      <nav class="nav" id="mainNav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#papers" class="nav-link">Past Papers</a>
+        <a href="index.html#notes" class="nav-link">Notes</a>
+        <a href="index.html#subjects" class="nav-link">Subjects</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="comments.html" class="nav-link">Comments</a>
+        <a href="chat.html" class="nav-link active">Chat</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <span class="icon-sun">☀</span>
+          <span class="icon-moon">☾</span>
+        </button>
+        <button class="btn btn-outline">Login</button>
+        <button class="btn btn-primary">Sign Up</button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="chat-page" id="chatPage">
+    <!-- Conversations Sidebar -->
+    <aside class="chat-sidebar" id="chatSidebar">
+      <div class="chat-sidebar-header">
+        <h2>Messages</h2>
+        <button class="btn btn-ghost btn-sm" id="newChatBtn" title="New chat">＋</button>
+      </div>
+      <div class="chat-search">
+        <input type="search" id="chatSearch" placeholder="Search conversations..." autocomplete="off" />
+      </div>
+      <div class="conversations" id="conversationsList">
+        <!-- Injected by JS -->
+      </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="chat-main" id="chatMain">
+      <div class="chat-empty" id="chatEmpty">
+        <div class="chat-empty-icon">💬</div>
+        <h3>Your messages</h3>
+        <p>Select a conversation or start a new one to chat with fellow HSHS students.</p>
+      </div>
+
+      <div id="activeChat" style="display: none; flex-direction: column; height: 100%;">
+        <div class="chat-main-header" id="chatHeader">
+          <div class="conv-avatar" id="activeAvatar">A</div>
+          <div>
+            <h3 id="activeName">Student</h3>
+            <div class="status" id="activeStatus">Online</div>
+          </div>
+        </div>
+
+        <div class="messages" id="messagesContainer">
+          <!-- Messages injected -->
+        </div>
+
+        <div class="chat-input-bar">
+          <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off" />
+          <button class="chat-send-btn" id="sendBtn" aria-label="Send message">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M22 2L11 13"></path>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Chat-specific logic (extends app.js)
+    (function() {
+      const conversations = [
+        {
+          id: 1,
+          name: "Amina K.",
+          avatar: "A",
+          preview: "Thanks for the Maths notes!",
+          time: "2m",
+          unread: 2,
+          status: "Online",
+          messages: [
+            { text: "Hey! Do you have the Form 4 Maths Paper 1?", sent: false, time: "10:12" },
+            { text: "Yes, I just uploaded it yesterday.", sent: true, time: "10:14" },
+            { text: "Thanks for the Maths notes!", sent: false, time: "10:15" }
+          ]
+        },
+        {
+          id: 2,
+          name: "Brian O.",
+          avatar: "B",
+          preview: "Physics group study at 4pm?",
+          time: "25m",
+          unread: 0,
+          status: "Online",
+          messages: [
+            { text: "Physics group study at 4pm?", sent: false, time: "09:50" },
+            { text: "Count me in! Library or classroom?", sent: true, time: "09:52" }
+          ]
+        },
+        {
+          id: 3,
+          name: "Faith W.",
+          avatar: "F",
+          preview: "The Biology notes are fire 🔥",
+          time: "1h",
+          unread: 1,
+          status: "Away",
+          messages: [
+            { text: "The Biology notes are fire 🔥", sent: false, time: "08:40" }
+          ]
+        },
+        {
+          id: 4,
+          name: "Study Group – Chem",
+          avatar: "C",
+          preview: "Someone share the organic chem summary", 
+          time: "3h",
+          unread: 0,
+          status: "3 members",
+          messages: [
+            { text: "Someone share the organic chem summary", sent: false, time: "07:15" },
+            { text: "I have it, sending now.", sent: true, time: "07:18" }
+          ]
+        },
+        {
+          id: 5,
+          name: "Daniel M.",
+          avatar: "D",
+          preview: "Good luck with the exams!",
+          time: "Yesterday",
+          unread: 0,
+          status: "Offline",
+          messages: [
+            { text: "How are the revisions going?", sent: true, time: "Yesterday" },
+            { text: "Good luck with the exams!", sent: false, time: "Yesterday" }
+          ]
+        }
+      ];
+
+      let activeId = null;
+
+      function renderConversations(filter = "") {
+        const list = document.getElementById("conversationsList");
+        if (!list) return;
+        const filtered = conversations.filter(c =>
+          c.name.toLowerCase().includes(filter.toLowerCase()) ||
+          c.preview.toLowerCase().includes(filter.toLowerCase())
+        );
+        list.innerHTML = filtered.map(c => `
+          <div class="conversation-item ${c.id === activeId ? 'active' : ''}" data-id="${c.id}">
+            <div class="conv-avatar">${c.avatar}</div>
+            <div class="conv-info">
+              <div class="conv-name">${c.name}</div>
+              <div class="conv-preview">${c.preview}</div>
+            </div>
+            <div class="conv-meta">
+              <div class="conv-time">${c.time}</div>
+              ${c.unread ? `<span class="conv-unread">${c.unread}</span>` : ''}
+            </div>
+          </div>
+        `).join("");
+
+        list.querySelectorAll(".conversation-item").forEach(el => {
+          el.addEventListener("click", () => openConversation(+el.dataset.id));
+        });
+      }
+
+      function openConversation(id) {
+        activeId = id;
+        const conv = conversations.find(c => c.id === id);
+        if (!conv) return;
+
+        document.getElementById("chatEmpty").style.display = "none";
+        const active = document.getElementById("activeChat");
+        active.style.display = "flex";
+
+        document.getElementById("activeAvatar").textContent = conv.avatar;
+        document.getElementById("activeName").textContent = conv.name;
+        document.getElementById("activeStatus").textContent = conv.status;
+
+        const container = document.getElementById("messagesContainer");
+        container.innerHTML = conv.messages.map(m => `
+          <div class="message ${m.sent ? 'sent' : 'received'}">
+            ${m.text}
+            <div class="msg-time">${m.time}</div>
+          </div>
+        `).join("");
+        container.scrollTop = container.scrollHeight;
+
+        conv.unread = 0;
+        renderConversations(document.getElementById("chatSearch")?.value || "");
+
+        // Close sidebar on mobile
+        document.getElementById("chatSidebar")?.classList.remove("open");
+      }
+
+      function sendMessage() {
+        const input = document.getElementById("messageInput");
+        const text = input.value.trim();
+        if (!text || !activeId) return;
+
+        const conv = conversations.find(c => c.id === activeId);
+        if (!conv) return;
+
+        const now = new Date();
+        const time = now.getHours().toString().padStart(2, "0") + ":" +
+                     now.getMinutes().toString().padStart(2, "0");
+
+        conv.messages.push({ text, sent: true, time });
+        conv.preview = text;
+        conv.time = "Just now";
+
+        input.value = "";
+        openConversation(activeId);
+      }
+
+      // Events
+      document.getElementById("chatSearch")?.addEventListener("input", e => {
+        renderConversations(e.target.value);
+      });
+
+      document.getElementById("sendBtn")?.addEventListener("click", sendMessage);
+      document.getElementById("messageInput")?.addEventListener("keypress", e => {
+        if (e.key === "Enter") sendMessage();
+      });
+
+      // Initial render
+      renderConversations();
+
+      // Optional: open first conversation by default on desktop
+      if (window.innerWidth > 900 && conversations.length) {
+        openConversation(conversations[0].id);
+      }
+    })();
+  </script>
+</body>
+</html>
