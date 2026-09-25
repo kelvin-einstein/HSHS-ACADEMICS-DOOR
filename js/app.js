@@ -1,6 +1,6 @@
 /**
  * HSHS Academics Door - Main Application Script
- * Theme, animations, search, comments, community charts
+ * Theme, animations, search, comments, community charts, chat support
  */
 
 // ============================================
@@ -37,6 +37,7 @@ const sampleData = {
     { title: "By Subject", desc: "Find resources organised by subject", icon: "📚", link: "#subjects" },
     { title: "Community", desc: "See school community stats & charts", icon: "📊", link: "community.html" },
     { title: "Comments", desc: "Share feedback with other students", icon: "💬", link: "comments.html" },
+    { title: "Chat", desc: "Message fellow students in real-time", icon: "🗨️", link: "chat.html" },
     { title: "Upload", desc: "Share your notes with other students", icon: "⬆️", link: "#" }
   ]
 };
@@ -112,7 +113,7 @@ function renderNotes() {
     .map(
       (note) => `
       <article class="card paper-card reveal">
-        <span class="badge" style="background:color-mix(in srgb, var(--success) 15%, transparent);color:var(--success)">${note.subject}</span>
+        <span class="badge" style="background:color-mix(in oklch, var(--success) 15%, transparent);color:var(--success)">${note.subject}</span>
         <h3>${note.title}</h3>
         <div class="paper-meta">
           <span>${note.author}</span>
@@ -262,7 +263,7 @@ function initCommunityCharts() {
         datasets: [{
           data: [48, 41, 36, 32, 29, 24, 40],
           backgroundColor: [
-            "#2563eb", "#0ea5e9", "#10b981", "#f59e0b",
+            "#3b82f6", "#0ea5e9", "#10b981", "#f59e0b",
             "#8b5cf6", "#ef4444", "#64748b"
           ],
           borderWidth: 0
@@ -288,7 +289,7 @@ function initCommunityCharts() {
         datasets: [{
           label: "Downloads",
           data: [320, 410, 380, 520, 610, 580, 720, 690, 810],
-          backgroundColor: "#2563eb",
+          backgroundColor: "#3b82f6",
           borderRadius: 6
         }]
       },
@@ -438,7 +439,7 @@ function init() {
     setTimeout(initCommunityCharts, 50);
   }
 
-  console.log("%cHSHS Academics Door ready 🚀", "color: #2563eb; font-weight: bold;");
+  console.log("%cHSHS Academics Door ready 🚀", "color: #3b82f6; font-weight: bold;");
 }
 
 document.addEventListener("DOMContentLoaded", init);
