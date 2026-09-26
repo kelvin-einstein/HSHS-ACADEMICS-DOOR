@@ -55,6 +55,45 @@ function toggleTheme() {
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
+const PROFILE_KEY = "hshs-profile-photo";
+
+function initProfileUpload() {
+  const input = $("#profileUpload");
+  const btn = $("#profileBtn");
+  const preview = $("#profilePreview");
+  const placeholder = $("#profilePlaceholder");
+  if (!input || !btn) return;
+
+  const saved = localStorage.getItem(PROFILE_KEY);
+  if (saved && preview) {
+    preview.src = saved;
+    preview.hidden = false;
+    if (placeholder) placeholder.hidden = true;
+  }
+
+  btn.addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    const file = input.files && input.files[0];
+    if (!file || !file.type.startsWith("image/")) return;
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Please choose an image under 2 MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      localStorage.setItem(PROFILE_KEY, dataUrl);
+      if (preview) {
+        preview.src = dataUrl;
+        preview.hidden = false;
+        preview.alt = "Your profile photo";
+      }
+      if (placeholder) placeholder.hidden = true;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 function renderQuickAccess() {
   const el = $("#quickAccessCards");
   if (!el) return;
@@ -85,8 +124,8 @@ function renderPapers() {
           <span>• ${paper.downloads.toLocaleString()} downloads</span>
         </div>
         <div class="paper-actions">
-          <button class="btn btn-primary btn-sm">Download</button>
-          <button class="btn btn-outline btn-sm">Preview</button>
+          <button class="btn btn-primary btn-sm" type="button">Download</button>
+          <button class="btn btn-outline btn-sm" type="button">Preview</button>
         </div>
       </article>`
     )
@@ -107,8 +146,8 @@ function renderNotes() {
           <span>• ${note.pages} pages</span>
         </div>
         <div class="paper-actions">
-          <button class="btn btn-primary btn-sm">View Note</button>
-          <button class="btn btn-outline btn-sm">Save</button>
+          <button class="btn btn-primary btn-sm" type="button">View Note</button>
+          <button class="btn btn-outline btn-sm" type="button">Save</button>
         </div>
       </article>`
     )
@@ -121,7 +160,7 @@ function renderSubjects() {
   el.innerHTML = sampleData.subjects
     .map(
       (sub) => `
-      <div class="card subject-card reveal" data-subject="${sub.name}">
+      <div class="card subject-card reveal" data-subject="${sub.name}" role="button" tabindex="0">
         <div class="icon">${sub.icon}</div>
         <h3>${sub.name}</h3>
         <p class="card-desc">${sub.count} resources</p>
@@ -177,10 +216,12 @@ function renderComments() {
   listEl.innerHTML = comments
     .slice()
     .reverse()
-    .map(
-      (c) => {
-        const pic = "https://ui-avatars.com/api/?name=" + encodeURIComponent(c.name) + "&background=4f46e5&color=fff&size=72&bold=true&format=svg";
-        return `
+    .map((c) => {
+      const pic =
+        "https://ui-avatars.com/api/?name=" +
+        encodeURIComponent(c.name) +
+        "&background=4f46e5&color=fff&size=72&bold=true&format=svg";
+      return `
       <div class="comment-item">
         <div class="comment-header">
           <div class="comment-author-wrap">
@@ -191,8 +232,7 @@ function renderComments() {
         </div>
         <p class="comment-body">${escapeHtml(c.text)}</p>
       </div>`;
-      }
-    )
+    })
     .join("");
 }
 
@@ -334,9 +374,17 @@ function setupEventListeners() {
   const menuBtn = $("#mobileMenuBtn");
   const nav = $("#mainNav");
   if (menuBtn && nav) {
-    menuBtn.addEventListener("click", () => nav.classList.toggle("open"));
+    menuBtn.addEventListener("click", () => {
+      const open = nav.classList.toggle("open");
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    });
     nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => nav.classList.remove("open"));
+      link.addEventListener("click", () => {
+        nav.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.setAttribute("aria-label", "Open menu");
+      });
     });
   }
 
@@ -381,6 +429,7 @@ function createHeroParticles() {
 
 function init() {
   initTheme();
+  initProfileUpload();
   renderQuickAccess();
   renderPapers();
   renderNotes();
