@@ -229,7 +229,8 @@
   .search-box input { flex: 1; border: none; padding: 1.05rem 1.55rem; font-size: 1rem; outline: none; color: var(--text); background: transparent; }
   .search-box input::placeholder { color: var(--text-light); }
   .search-btn {
-    background: linear-gradient(135deg, var(--primary), var(--accent); color: oklch(1 0 0);
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: oklch(1 0 0);
     padding-inline: 1.5rem; display: grid; place-items: center; transition: all var(--transition);
   }
   .search-btn:hover { filter: brightness(1.1); }
