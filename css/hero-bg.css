@@ -1,2 +1,13 @@
-/* placeholder - will replace */
-.hero-bg { background-color: #1a1a2e; }
+/*
+  Home page hero background
+  1. Add file: assets/hero-bg.jpg in this repo (your Drive photo)
+  2. Hard-refresh the site
+  Until then, the classroom photo is used as fallback.
+*/
+.hero-bg {
+  background-image:
+    url("../assets/hero-bg.jpg"),
+    url("https://hawthorne-scribner.ac.ug/wp-content/uploads/2025/07/Classroom-4-12-31-2024-edited-scaled.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
