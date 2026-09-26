@@ -1,6 +1,5 @@
 /**
- * HSHS Academics Door - Main Application Script
- * Theme, animations, search, comments, community charts, chat support
+ * Hawthorne-Scribner High School · Academics Door
  */
 
 const sampleData = {
@@ -179,14 +178,20 @@ function renderComments() {
     .slice()
     .reverse()
     .map(
-      (c) => `
+      (c) => {
+        const pic = "https://ui-avatars.com/api/?name=" + encodeURIComponent(c.name) + "&background=4f46e5&color=fff&size=72&bold=true&format=svg";
+        return `
       <div class="comment-item">
         <div class="comment-header">
-          <span class="comment-author">${escapeHtml(c.name)}</span>
+          <div class="comment-author-wrap">
+            <img class="comment-avatar" src="${pic}" alt="" width="36" height="36" />
+            <span class="comment-author">${escapeHtml(c.name)}</span>
+          </div>
           <span class="comment-date">${c.date}</span>
         </div>
         <p class="comment-body">${escapeHtml(c.text)}</p>
-      </div>`
+      </div>`;
+      }
     )
     .join("");
 }
@@ -243,19 +248,14 @@ function initCommunityCharts() {
         labels: ["Mathematics", "English", "Biology", "Chemistry", "Physics", "History", "Others"],
         datasets: [{
           data: [48, 41, 36, 32, 29, 24, 40],
-          backgroundColor: [
-            "#3b82f6", "#0ea5e9", "#10b981", "#f59e0b",
-            "#8b5cf6", "#ef4444", "#64748b"
-          ],
+          backgroundColor: ["#6366f1", "#06b6d4", "#10b981", "#f59e0b", "#a855f7", "#ef4444", "#64748b"],
           borderWidth: 0
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-          legend: { position: "bottom", labels: { boxWidth: 12, padding: 14 } }
-        }
+        plugins: { legend: { position: "bottom", labels: { boxWidth: 12, padding: 14 } } }
       }
     });
   }
@@ -269,7 +269,7 @@ function initCommunityCharts() {
         datasets: [{
           label: "Downloads",
           data: [320, 410, 380, 520, 610, 580, 720, 690, 810],
-          backgroundColor: "#3b82f6",
+          backgroundColor: "#6366f1",
           borderRadius: 6
         }]
       },
@@ -294,12 +294,12 @@ function initCommunityCharts() {
         datasets: [{
           label: "Active Students",
           data: [180, 210, 240, 260, 310, 340, 390, 420, 460],
-          borderColor: "#0ea5e9",
-          backgroundColor: "rgba(14,165,233,0.12)",
+          borderColor: "#06b6d4",
+          backgroundColor: "rgba(6,182,212,0.12)",
           fill: true,
           tension: 0.35,
           pointRadius: 4,
-          pointBackgroundColor: "#0ea5e9"
+          pointBackgroundColor: "#06b6d4"
         }]
       },
       options: {
@@ -319,9 +319,7 @@ function initScrollReveal() {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
+        if (entry.isIntersecting) entry.target.classList.add("visible");
       });
     },
     { threshold: 0.12 }
@@ -331,9 +329,7 @@ function initScrollReveal() {
 
 function setupEventListeners() {
   const themeBtn = $("#themeToggle");
-  if (themeBtn) {
-    themeBtn.addEventListener("click", toggleTheme);
-  }
+  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
 
   const menuBtn = $("#mobileMenuBtn");
   const nav = $("#mainNav");
@@ -374,7 +370,7 @@ function handleSearch() {
 function createHeroParticles() {
   const container = $(".hero-particles");
   if (!container) return;
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 32; i++) {
     const span = document.createElement("span");
     span.style.left = Math.random() * 100 + "%";
     span.style.animationDelay = Math.random() * 10 + "s";
@@ -400,7 +396,7 @@ function init() {
     setTimeout(initCommunityCharts, 50);
   }
 
-  console.log("%cHSHS Academics Door ready 🚀", "color: #3b82f6; font-weight: bold;");
+  console.log("%cHawthorne-Scribner High School · Academics Door ready 🚀", "color: #6366f1; font-weight: bold;");
 }
 
 document.addEventListener("DOMContentLoaded", init);
