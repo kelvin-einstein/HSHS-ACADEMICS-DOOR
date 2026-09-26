@@ -1,4 +1,4 @@
-/* Badge logo, classroom hero, profile upload, accessibility */
+/* Badge logo, classroom hero, profile upload, accessibility, chat extras */
 .skip-link {
   position: absolute;
   inset-inline-start: 1rem;
@@ -111,3 +111,154 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-bg { animation: none !important; }
 }
+
+/* —— Chat extras: emoji, attach, polls, groups, modals —— */
+.chat-sidebar-actions { display: flex; gap: 0.25rem; }
+.chat-empty-actions { display: flex; gap: 0.75rem; justify-content: center; margin-block-start: 1.25rem; flex-wrap: wrap; }
+.chat-header-info { flex: 1; min-inline-size: 0; }
+.chat-header-actions { display: flex; gap: 0.15rem; margin-inline-start: auto; }
+.chat-back-btn { display: none; }
+@media (max-width: 900px) {
+  .chat-back-btn { display: inline-grid; }
+}
+
+.chat-icon-btn {
+  inline-size: 40px;
+  block-size: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+.chat-icon-btn:hover {
+  color: var(--primary);
+  background: color-mix(in oklch, var(--primary) 10%, transparent);
+}
+.chat-icon-btn:active { transform: scale(0.92); }
+
+.chat-attach-wrap { position: relative; }
+.attach-menu {
+  position: absolute;
+  inset-block-end: calc(100% + 8px);
+  inset-inline-start: 0;
+  min-inline-size: 180px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 0.4rem;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.attach-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  text-align: start;
+  transition: background var(--transition-fast);
+}
+.attach-item:hover { background: color-mix(in oklch, var(--primary) 10%, transparent); color: var(--primary); }
+.attach-icon { font-size: 1.15rem; }
+
+.emoji-picker {
+  position: absolute;
+  inset-block-end: 70px;
+  inset-inline-start: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 0.6rem;
+  z-index: 40;
+  max-inline-size: 280px;
+}
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.2rem;
+}
+.emoji-btn {
+  font-size: 1.35rem;
+  padding: 0.35rem;
+  border-radius: 8px;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.emoji-btn:hover { background: color-mix(in oklch, var(--primary) 12%, transparent); transform: scale(1.15); }
+
+.chat-main { position: relative; }
+
+.message-poll .poll-q { font-weight: 600; margin-block-end: 0.5rem; }
+.poll-opts { display: flex; flex-direction: column; gap: 0.35rem; }
+.poll-opt-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in oklch, currentColor 25%, transparent);
+  background: color-mix(in oklch, currentColor 8%, transparent);
+  font-size: 0.88rem;
+  transition: background var(--transition-fast);
+}
+.poll-opt-btn:hover { background: color-mix(in oklch, currentColor 16%, transparent); }
+.poll-pct { opacity: 0.75; font-size: 0.8rem; font-weight: 600; }
+.message-file .file-bubble {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+.file-icon { font-size: 1.2rem; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: oklch(0 0 0 / 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 200;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay[hidden] { display: none !important; }
+.modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  width: 100%;
+  max-inline-size: 400px;
+  box-shadow: var(--shadow-lg);
+}
+.modal-card h3 { font-size: 1.2rem; margin-block-end: 0.35rem; }
+.modal-hint { font-size: 0.88rem; color: var(--text-muted); margin-block-end: 1rem; }
+.modal-card input[type="text"],
+.modal-card .poll-option {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  margin-block-end: 0.65rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.modal-card input:focus { border-color: var(--primary); }
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-block-start: 0.75rem;
+}
+#addPollOption { margin-block-end: 0.5rem; }
