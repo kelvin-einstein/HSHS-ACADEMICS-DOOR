@@ -1,0 +1,113 @@
+/* Badge logo, classroom hero, profile upload, accessibility */
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-block-start: -100px;
+  z-index: 9999;
+  padding: 0.6rem 1rem;
+  background: var(--primary);
+  color: oklch(1 0 0);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: inset-block-start 0.2s ease;
+}
+.skip-link:focus {
+  inset-block-start: 1rem;
+  outline: 2px solid oklch(1 0 0);
+  outline-offset: 2px;
+}
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+.logo-badge {
+  inline-size: 48px;
+  block-size: 48px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: oklch(1 0 0 / 0.95);
+  padding: 2px;
+  box-shadow: 0 0 18px color-mix(in oklch, var(--primary) 40%, transparent);
+  transition: transform var(--transition-spring), box-shadow var(--transition);
+}
+.logo:hover .logo-badge {
+  transform: scale(1.06);
+  box-shadow: 0 0 28px color-mix(in oklch, var(--primary) 55%, transparent);
+}
+.footer-badge {
+  margin-block-end: 0.75rem;
+  box-shadow: none;
+  background: transparent;
+}
+.hero-with-photo { position: relative; isolation: isolate; }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  transform: scale(1.02);
+  animation: heroBgKen 28s ease-in-out infinite alternate;
+}
+@keyframes heroBgKen {
+  0% { transform: scale(1.02) translate(0, 0); }
+  100% { transform: scale(1.08) translate(-1%, -1%); }
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    145deg,
+    oklch(0.18 0.1 275 / 0.88) 0%,
+    oklch(0.28 0.14 265 / 0.82) 40%,
+    oklch(0.35 0.12 230 / 0.78) 100%
+  );
+}
+[data-theme="dark"] .hero-overlay {
+  background: linear-gradient(
+    145deg,
+    oklch(0.08 0.06 280 / 0.92) 0%,
+    oklch(0.14 0.1 270 / 0.88) 45%,
+    oklch(0.2 0.1 230 / 0.85) 100%
+  );
+}
+.hero-with-photo .hero-grid,
+.hero-with-photo .hero-particles,
+.hero-with-photo .hero-content { z-index: 2; }
+.profile-upload-wrap { position: relative; }
+.profile-btn {
+  inline-size: 42px;
+  block-size: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--bg-elevated);
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition-fast);
+  padding: 0;
+}
+.profile-btn:hover {
+  border-color: var(--primary);
+  box-shadow: var(--glow);
+  transform: scale(1.06);
+}
+.profile-btn:active { transform: scale(0.94); }
+.profile-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.profile-preview {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+.profile-placeholder { font-size: 1.2rem; line-height: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg { animation: none !important; }
+}
