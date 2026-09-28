@@ -1,1 +1,77 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Online Learning | Hawthorne-Scribner High School</title>
+<link rel="stylesheet" href="css/styles.css"/>
+<link rel="stylesheet" href="css/overrides.css"/>
+<link rel="stylesheet" href="css/learn.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script>(function(){const t=localStorage.getItem('hshs-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+<header class="header"><div class="container header-inner">
+<a href="index.html" class="logo"><img class="logo-badge" src="https://hawthorne-scribner.ac.ug/wp-content/uploads/2024/12/Hawthorne-Scribner-Badge-png-768x771.png" alt="" width="48" height="48"/><span class="logo-text"><span class="logo-name">Hawthorne-Scribner</span><span class="logo-sub">Academics Door</span></span></a>
+<nav class="nav" id="mainNav">
+<a href="index.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nav-label">Home</span></a>
+<a href="index.html#papers" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="nav-label">Past Papers</span></a>
+<a href="index.html#notes" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span class="nav-label">Notes</span></a>
+<a href="learn.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span class="nav-label">Learn</span></a>
+<a href="community.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span class="nav-label">Community</span></a>
+<a href="comments.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nav-label">Comments</span></a>
+<a href="chat.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="nav-label">Chat</span></a>
+</nav>
+<div class="header-actions">
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><span class="icon-sun"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/></svg></span><span class="icon-moon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span></button>
+<button class="btn btn-outline" id="loginBtn" type="button">Login</button>
+<button class="btn btn-primary" id="signupBtn" type="button">Sign Up</button>
+<button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+</div></div></header>
+<main id="main-content">
+<section class="page-hero learn-hero"><div class="container">
+<p class="school-badge">Digital Classroom</p>
+<h1>Online Learning</h1>
+<p>Courses, live classes, quizzes, assignments, progress tracking, and certificates — everything you need to learn from anywhere.</p>
+<div class="learn-hero-actions"><a href="#courses" class="btn btn-primary">Browse Courses</a><a href="#live" class="btn btn-outline">Join Live Class</a></div>
+</div></section>
+<section class="section"><div class="container">
+<h2 class="section-title">Everything for Online Learning</h2>
+<p class="section-lead">A complete modern learning platform built for Hawthorne-Scribner students.</p>
+<div class="learn-features-grid" id="learnFeatures"></div>
+</div></section>
+<section class="section learn-progress-section"><div class="container">
+<div class="section-header"><h2 class="section-title">Your Progress</h2><span class="progress-badge">This term</span></div>
+<div class="progress-overview">
+<div class="progress-card reveal"><div class="progress-ring" data-pct="68"><svg viewBox="0 0 36 36"><path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/><path class="ring-fill" stroke-dasharray="68, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/></svg><span class="ring-text">68%</span></div><div><h3>Overall completion</h3><p class="card-desc">Across enrolled courses</p></div></div>
+<div class="progress-stats">
+<div class="progress-stat reveal"><span class="num">4</span><span class="lbl">Courses enrolled</span></div>
+<div class="progress-stat reveal"><span class="num">12</span><span class="lbl">Lessons completed</span></div>
+<div class="progress-stat reveal"><span class="num">3</span><span class="lbl">Quizzes passed</span></div>
+<div class="progress-stat reveal"><span class="num">2</span><span class="lbl">Certificates</span></div>
+</div></div></div></section>
+<section class="section" id="courses"><div class="container">
+<div class="section-header"><h2 class="section-title">Courses</h2>
+<div class="course-filters"><button type="button" class="chip active" data-filter="all">All</button><button type="button" class="chip" data-filter="math">Mathematics</button><button type="button" class="chip" data-filter="science">Science</button><button type="button" class="chip" data-filter="languages">Languages</button></div></div>
+<div class="courses-grid" id="coursesGrid"></div></div></section>
+<section class="section" id="live"><div class="container">
+<div class="section-header"><h2 class="section-title">Live Classes</h2><a href="#" class="view-all">View schedule →</a></div>
+<div class="live-grid" id="liveGrid"></div></div></section>
+<section class="section" id="assessments"><div class="container">
+<h2 class="section-title">Assignments & Quizzes</h2>
+<div class="assess-grid">
+<div class="assess-col"><h3 class="assess-heading">Upcoming assignments</h3><div id="assignmentsList"></div></div>
+<div class="assess-col"><h3 class="assess-heading">Quizzes</h3><div id="quizzesList"></div></div>
+</div></div></section>
+<section class="section" id="certificates"><div class="container">
+<h2 class="section-title">Certificates & Badges</h2>
+<div class="certs-grid" id="certsGrid"></div></div></section>
+</main>
+<footer class="footer"><div class="container footer-inner">
+<div class="footer-brand"><strong>Hawthorne-Scribner High School</strong><p class="footer-motto">Educate · Engage · Empower</p></div>
+<div class="footer-links"><div><h4>Resources</h4><a href="index.html#papers">Past Papers</a><a href="learn.html">Online Learning</a></div><div><h4>Community</h4><a href="community.html">Charts</a><a href="chat.html">Chat</a></div></div>
+</div><div class="footer-bottom"><div class="container"><p>&copy; 2026 Hawthorne-Scribner High School · Academics Door</p></div></div></footer>
+<script src="js/app.js"></script>
+<script src="js/learn.js"></script>
+</body>
+</html>
