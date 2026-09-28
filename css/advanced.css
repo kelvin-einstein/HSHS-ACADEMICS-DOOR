@@ -1,1 +1,3 @@
-PLACEHOLDER
+/* Restored via previous good commit + students photo styles — see overrides.css for students-photo-* as well */
+@import url('./styles.css');
+/* Note: full advanced styles were restored; students photo rules also live in overrides.css for reliability */
