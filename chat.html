@@ -7,90 +7,53 @@
   <title>Chat | Hawthorne-Scribner High School</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/overrides.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script>(function(){var t=localStorage.getItem('hshs-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);})();</script>
-  <style>
-    .chat-page{display:flex;height:calc(100vh - 74px);overflow:hidden}
-    .chat-sidebar{width:320px;border-inline-end:1px solid var(--border);display:flex;flex-direction:column;background:var(--bg-card)}
-    .chat-sidebar-header{display:flex;align-items:center;justify-content:space-between;padding:1rem;border-block-end:1px solid var(--border)}
-    .chat-sidebar-header h2{font-size:1.1rem;margin:0}
-    .chat-search{padding:.75rem 1rem}
-    .chat-search input{width:100%;padding:.55rem .85rem;border-radius:10px;border:1.5px solid var(--border);background:var(--bg);outline:0}
-    .conversations{flex:1;overflow-y:auto}
-    .conversation-item{display:flex;gap:.75rem;padding:.75rem 1rem;cursor:pointer;align-items:center}
-    .conversation-item:hover,.conversation-item.active{background:color-mix(in oklch,var(--primary) 10%,transparent)}
-    .conv-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0}
-    .conv-info{flex:1;min-width:0}
-    .conv-name{font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .conv-preview{font-size:.8rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .conv-meta{text-align:end;flex-shrink:0}
-    .conv-time{font-size:.72rem;color:var(--text-muted)}
-    .conv-unread{display:inline-block;background:var(--primary);color:#fff;font-size:.7rem;font-weight:700;padding:.1rem .45rem;border-radius:999px}
-    .chat-main{flex:1;display:flex;flex-direction:column;background:var(--bg);position:relative}
-    .chat-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;color:var(--text-muted)}
-    .chat-empty-actions{display:flex;gap:.75rem;margin-block-start:1.25rem}
-    .chat-main-header{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-block-end:1px solid var(--border);background:var(--bg-card)}
-    .chat-header-info{flex:1;min-width:0}
-    .chat-header-info h3{margin:0;font-size:.95rem}
-    .chat-header-info .status{font-size:.75rem;color:var(--success)}
-    .chat-header-actions{display:flex;gap:.25rem}
-    .messages{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:.6rem}
-    .message{max-width:70%;padding:.65rem .9rem;border-radius:14px;font-size:.9rem;line-height:1.45}
-    .message.sent{align-self:flex-end;background:var(--primary);color:#fff;border-end-end-radius:4px}
-    .message.received{align-self:flex-start;background:var(--bg-card);border:1px solid var(--border);border-end-start-radius:4px}
-    .msg-time{font-size:.68rem;opacity:.7;margin-block-start:.25rem;text-align:end}
-    .chat-input-bar{display:flex;align-items:center;gap:.4rem;padding:.75rem 1rem;border-block-start:1px solid var(--border);background:var(--bg-card);position:relative}
-    .chat-icon-btn{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--text-muted);border:0;background:transparent;cursor:pointer}
-    .chat-icon-btn:hover,.chat-icon-btn[aria-expanded=true]{background:color-mix(in oklch,var(--primary) 12%,transparent);color:var(--primary)}
-    .chat-input-bar input{flex:1;padding:.65rem .9rem;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);outline:0}
-    .chat-send-btn{width:42px;height:42px;border-radius:12px;background:var(--primary);color:#fff;display:grid;place-items:center;border:0;cursor:pointer}
-    .chat-attach-wrap{position:relative}
-    .attach-menu{position:absolute;bottom:calc(100% + 8px);left:0;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);padding:.4rem;min-width:180px;z-index:50}
-    .attach-item{display:flex;align-items:center;gap:.65rem;width:100%;padding:.55rem .75rem;border:0;background:transparent;border-radius:8px;cursor:pointer;font-size:.9rem;color:var(--text);text-align:start}
-    .attach-item:hover{background:color-mix(in oklch,var(--primary) 10%,transparent)}
-    .emoji-picker{position:absolute;bottom:calc(100% + 8px);left:3rem;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-lg);padding:.75rem;z-index:50;width:min(320px,90vw)}
-    .emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:.25rem}
-    .emoji-grid button{width:36px;height:36px;border:0;background:transparent;border-radius:8px;font-size:1.25rem;cursor:pointer;display:grid;place-items:center}
-    .emoji-grid button:hover{background:color-mix(in oklch,var(--primary) 12%,transparent)}
-    .modal-overlay{position:fixed;inset:0;background:oklch(0 0 0 / .5);display:flex;align-items:center;justify-content:center;z-index:200;padding:1rem}
-    .modal-overlay[hidden]{display:none!important}
-    .modal-card{background:var(--bg-card);border-radius:16px;padding:1.5rem;width:min(400px,100%);border:1px solid var(--border)}
-    .modal-card h3{margin:0 0 .35rem}
-    .modal-hint{color:var(--text-muted);font-size:.85rem;margin-block-end:1rem}
-    .modal-card input{width:100%;padding:.65rem .85rem;border-radius:10px;border:1.5px solid var(--border);margin-block-end:.75rem;background:var(--bg);outline:0;box-sizing:border-box}
-    .modal-actions{display:flex;gap:.5rem;justify-content:flex-end}
-    .chat-gate{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;gap:1rem;min-height:60vh}
-    .chat-gate h2{font-size:1.4rem;margin:0}
-    .chat-gate p{color:var(--text-muted);max-width:360px;margin:0}
-    .chat-gate-actions{display:flex;gap:.75rem;margin-block-start:.5rem}
-    .chat-back-btn{display:none}
-    .conv-avatar-fallback{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700;flex-shrink:0}
-    @media(max-width:900px){.chat-sidebar{width:100%}.chat-sidebar.hidden-mobile{display:none}.chat-main{display:none}.chat-main.active-mobile{display:flex;width:100%}.chat-back-btn{display:inline-flex}}
-  </style>
+  <script>
+    (function () {
+      var t = localStorage.getItem('hshs-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 </head>
 <body>
   <header class="header">
     <div class="container header-inner">
-      <a href="index.html" class="logo"><img class="logo-badge" src="https://hawthorne-scribner.ac.ug/wp-content/uploads/2024/12/Hawthorne-Scribner-Badge-png-768x771.png" alt="" width="48" height="48" /><span class="logo-text"><span class="logo-name">Hawthorne-Scribner</span><span class="logo-sub">Academics Door</span></span></a>
+      <a href="index.html" class="logo" aria-label="Hawthorne-Scribner High School – Home">
+        <img class="logo-badge" src="https://hawthorne-scribner.ac.ug/wp-content/uploads/2024/12/Hawthorne-Scribner-Badge-png-768x771.png" alt="Hawthorne-Scribner High School badge" width="48" height="48" />
+        <span class="logo-text">
+          <span class="logo-name">Hawthorne-Scribner</span>
+          <span class="logo-sub">Academics Door</span>
+        </span>
+      </a>
       <nav class="nav" id="mainNav">
-        <a href="index.html" class="nav-link"><span class="nav-label">Home</span></a>
-        <a href="community.html" class="nav-link"><span class="nav-label">Community</span></a>
-        <a href="comments.html" class="nav-link"><span class="nav-label">Comments</span></a>
-        <a href="chat.html" class="nav-link active"><span class="nav-label">Chat</span></a>
+        <a href="index.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nav-label">Home</span></a>
+        <a href="index.html#papers" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="nav-label">Past Papers</span></a>
+        <a href="community.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span class="nav-label">Community</span></a>
+        <a href="comments.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="nav-label">Comments</span></a>
+        <a href="chat.html" class="nav-link active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="nav-label">Chat</span></a>
       </nav>
       <div class="header-actions">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><span class="icon-sun">☀</span><span class="icon-moon">☾</span></button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+          <span class="icon-sun"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg></span>
+          <span class="icon-moon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+        </button>
         <button class="btn btn-outline" id="loginBtn" type="button">Login</button>
         <button class="btn btn-primary" id="signupBtn" type="button">Sign Up</button>
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
 
+  <!-- Sign-in gate -->
   <div class="chat-gate" id="chatGate" hidden>
-    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <div class="chat-gate-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
     <h2>Sign in to use Chat</h2>
-    <p>Create a free account or log in to message fellow Hawthorne-Scribner students.</p>
+    <p>Create a free account or log in to message fellow Hawthorne-Scribner students securely.</p>
     <div class="chat-gate-actions">
       <button type="button" class="btn btn-primary" id="gateLogin">Login</button>
       <button type="button" class="btn btn-outline" id="gateSignup">Sign Up</button>
@@ -102,84 +65,124 @@
       <div class="chat-sidebar-header">
         <h2>Messages</h2>
         <div class="chat-sidebar-actions">
-          <button class="btn btn-ghost btn-sm" id="newGroupBtn" title="New group" aria-label="New group">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <button class="btn btn-ghost btn-sm" id="newGroupBtn" title="New group" aria-label="Create group">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </button>
           <button class="btn btn-ghost btn-sm" id="newChatBtn" title="New chat" aria-label="New chat">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
         </div>
       </div>
-      <div class="chat-search"><input type="search" id="chatSearch" placeholder="Search conversations..." autocomplete="off" /></div>
+      <div class="chat-search">
+        <input type="search" id="chatSearch" placeholder="Search conversations..." autocomplete="off" />
+      </div>
       <div class="conversations" id="conversationsList"></div>
     </aside>
+
     <main class="chat-main" id="chatMain">
       <div class="chat-empty" id="chatEmpty">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" style="opacity:0.35"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <h3>Your messages</h3>
-        <p>Select a conversation or start a new one.</p>
+        <p>Select a conversation or start a new one to chat with classmates.</p>
         <div class="chat-empty-actions">
           <button class="btn btn-primary" id="emptyNewChat">New chat</button>
           <button class="btn btn-outline" id="emptyNewGroup">Create group</button>
         </div>
       </div>
+
       <div id="activeChat" style="display:none;flex-direction:column;height:100%">
-        <div class="chat-main-header">
-          <button class="btn btn-ghost btn-sm chat-back-btn" id="chatBackBtn">←</button>
+        <div class="chat-main-header" id="chatHeader">
+          <button class="btn btn-ghost btn-sm chat-back-btn" id="chatBackBtn" aria-label="Back">←</button>
           <img class="conv-avatar" id="activeAvatarImg" src="" alt="" style="display:none" />
           <div class="conv-avatar-fallback" id="activeAvatar">A</div>
-          <div class="chat-header-info"><h3 id="activeName">Student</h3><div class="status" id="activeStatus">Online</div></div>
+          <div class="chat-header-info">
+            <h3 id="activeName">Student</h3>
+            <div class="status" id="activeStatus">Online</div>
+          </div>
           <div class="chat-header-actions">
-            <button class="btn btn-ghost btn-sm" id="callBtn" title="Voice call" aria-label="Call"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button>
-            <button class="btn btn-ghost btn-sm" id="videoBtn" title="Video" aria-label="Video"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button>
-            <button class="btn btn-ghost btn-sm" id="infoBtn" title="Info" aria-label="Info"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+            <button class="btn btn-ghost btn-sm" id="callBtn" title="Voice call" aria-label="Voice call">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </button>
+            <button class="btn btn-ghost btn-sm" id="videoBtn" title="Video call" aria-label="Video call">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+            </button>
+            <button class="btn btn-ghost btn-sm" id="infoBtn" title="Chat info" aria-label="Info">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </button>
           </div>
         </div>
+
         <div class="messages" id="messagesContainer"></div>
+
         <div class="chat-input-bar">
           <div class="chat-attach-wrap">
-            <button type="button" class="chat-icon-btn" id="attachBtn" title="Attach" aria-expanded="false" aria-haspopup="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            <button type="button" class="chat-icon-btn" id="attachBtn" title="Attach" aria-label="Attach" aria-haspopup="true" aria-expanded="false">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
             </button>
             <div class="attach-menu" id="attachMenu" hidden role="menu">
-              <button type="button" class="attach-item" data-action="photo" role="menuitem"><span>Photo</span></button>
-              <button type="button" class="attach-item" data-action="video" role="menuitem"><span>Video</span></button>
-              <button type="button" class="attach-item" data-action="document" role="menuitem"><span>Document</span></button>
-              <button type="button" class="attach-item" data-action="poll" role="menuitem"><span>Poll</span></button>
-              <button type="button" class="attach-item" data-action="location" role="menuitem"><span>Location</span></button>
+              <button type="button" class="attach-item" data-action="photo" role="menuitem">Photo</button>
+              <button type="button" class="attach-item" data-action="video" role="menuitem">Video</button>
+              <button type="button" class="attach-item" data-action="document" role="menuitem">Document</button>
+              <button type="button" class="attach-item" data-action="poll" role="menuitem">Poll</button>
+              <button type="button" class="attach-item" data-action="location" role="menuitem">Location</button>
             </div>
           </div>
-          <button type="button" class="chat-icon-btn" id="emojiBtn" title="Emoji" aria-expanded="false" aria-haspopup="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          <button type="button" class="chat-icon-btn" id="emojiBtn" title="Emoji" aria-label="Emoji" aria-haspopup="true" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
           </button>
           <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off" />
-          <button class="chat-send-btn" id="sendBtn" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></button>
-          <div class="emoji-picker" id="emojiPicker" hidden><div class="emoji-grid" id="emojiGrid"></div></div>
+          <button class="chat-send-btn" id="sendBtn" aria-label="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+          </button>
+          <div class="emoji-picker" id="emojiPicker" hidden>
+            <div class="emoji-grid" id="emojiGrid"></div>
+          </div>
         </div>
       </div>
     </main>
   </div>
 
   <div class="modal-overlay" id="newChatModal" hidden>
-    <div class="modal-card"><h3>New chat</h3><p class="modal-hint">Start a conversation</p>
-      <input type="text" id="newChatName" placeholder="Student name" maxlength="40" />
-      <div class="modal-actions"><button type="button" class="btn btn-outline" data-close="newChatModal">Cancel</button><button type="button" class="btn btn-primary" id="confirmNewChat">Start</button></div>
+    <div class="modal-card" role="dialog" aria-labelledby="newChatTitle">
+      <h3 id="newChatTitle">New chat</h3>
+      <p class="modal-hint">Start a conversation with a student</p>
+      <input type="text" id="newChatName" placeholder="Student name (e.g. Jane A.)" maxlength="40" />
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" data-close="newChatModal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmNewChat">Start chat</button>
+      </div>
     </div>
   </div>
+
   <div class="modal-overlay" id="newGroupModal" hidden>
-    <div class="modal-card"><h3>Create group</h3><p class="modal-hint">Study groups</p>
-      <input type="text" id="newGroupName" placeholder="Group name" maxlength="50" />
-      <input type="text" id="newGroupMembers" placeholder="Members (comma-separated)" />
-      <div class="modal-actions"><button type="button" class="btn btn-outline" data-close="newGroupModal">Cancel</button><button type="button" class="btn btn-primary" id="confirmNewGroup">Create</button></div>
+    <div class="modal-card" role="dialog" aria-labelledby="newGroupTitle">
+      <h3 id="newGroupTitle">Create group</h3>
+      <p class="modal-hint">Study groups for subjects or classes</p>
+      <input type="text" id="newGroupName" placeholder="Group name (e.g. Form 4 Chemistry)" maxlength="50" />
+      <input type="text" id="newGroupMembers" placeholder="Members (comma-separated names)" />
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" data-close="newGroupModal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmNewGroup">Create group</button>
+      </div>
     </div>
   </div>
+
   <div class="modal-overlay" id="pollModal" hidden>
-    <div class="modal-card"><h3>Create a poll</h3>
-      <input type="text" id="pollQuestion" placeholder="Question..." maxlength="120" />
-      <div id="pollOptions"><input type="text" class="poll-option" placeholder="Option 1" /><input type="text" class="poll-option" placeholder="Option 2" /></div>
+    <div class="modal-card" role="dialog" aria-labelledby="pollTitle">
+      <h3 id="pollTitle">Create a poll</h3>
+      <input type="text" id="pollQuestion" placeholder="Ask a question..." maxlength="120" />
+      <div id="pollOptions">
+        <input type="text" class="poll-option" placeholder="Option 1" maxlength="60" />
+        <input type="text" class="poll-option" placeholder="Option 2" maxlength="60" />
+      </div>
       <button type="button" class="btn btn-ghost btn-sm" id="addPollOption">+ Add option</button>
-      <div class="modal-actions"><button type="button" class="btn btn-outline" data-close="pollModal">Cancel</button><button type="button" class="btn btn-primary" id="confirmPoll">Send poll</button></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" data-close="pollModal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirmPoll">Send poll</button>
+      </div>
     </div>
   </div>
+
   <input type="file" id="fileInput" class="visually-hidden" accept="image/*,video/*,.pdf,.doc,.docx,.txt" multiple />
 
   <script src="js/app.js"></script>
