@@ -1,0 +1,323 @@
+/* ============================================================
+   Welcome curtains + loader + hero branding + AI home motion
+   ============================================================ */
+
+/* ---- Full-page loader ---- */
+.site-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: oklch(0.14 0.04 275);
+  color: oklch(0.96 0.01 255);
+  transition: opacity 0.55s ease, visibility 0.55s ease;
+}
+.site-loader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.site-loader-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid oklch(1 0 0 / 0.12);
+  border-top-color: var(--primary, #818cf8);
+  border-right-color: color-mix(in oklch, var(--accent, #22d3ee) 80%, #fff);
+  animation: hshsSpin 0.85s linear infinite;
+}
+.site-loader-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.site-loader-bar {
+  width: min(200px, 50vw);
+  height: 3px;
+  border-radius: 999px;
+  background: oklch(1 0 0 / 0.1);
+  overflow: hidden;
+}
+.site-loader-bar > span {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary, #6366f1), var(--accent, #22d3ee));
+  animation: hshsLoadSlide 1.1s ease-in-out infinite;
+}
+@keyframes hshsSpin {
+  to { transform: rotate(360deg); }
+}
+@keyframes hshsLoadSlide {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
+/* ---- Theatre curtains ---- */
+.site-curtains {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  overflow: hidden;
+}
+.site-curtains.is-open .curtain-left {
+  transform: translateX(-105%);
+}
+.site-curtains.is-open .curtain-right {
+  transform: translateX(105%);
+}
+.curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 52%;
+  transition: transform 1.15s cubic-bezier(0.65, 0, 0.35, 1);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in oklch, var(--primary, #4f46e5) 55%, #1e1b4b) 0 14px,
+      color-mix(in oklch, var(--primary, #6366f1) 40%, #312e81) 14px 28px
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--primary, #4f46e5) 70%, #0f172a),
+      color-mix(in oklch, var(--accent, #0e7490) 35%, #1e1b4b)
+    );
+  box-shadow: inset 0 0 40px oklch(0 0 0 / 0.35);
+}
+.curtain-left {
+  left: 0;
+  border-right: 2px solid oklch(1 0 0 / 0.08);
+  transform-origin: left center;
+}
+.curtain-right {
+  right: 0;
+  border-left: 2px solid oklch(1 0 0 / 0.08);
+  transform-origin: right center;
+}
+.curtain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    oklch(0 0 0 / 0.25),
+    transparent 30%,
+    transparent 70%,
+    oklch(0 0 0 / 0.25)
+  );
+  pointer-events: none;
+}
+
+/* ---- Hero school name: large, colorful, visible ---- */
+.hero-title {
+  font-size: clamp(2.15rem, 6.5vw, 3.85rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.035em !important;
+  line-height: 1.08 !important;
+  margin-block: 0.35rem 0.65rem !important;
+  background: linear-gradient(
+    115deg,
+    #fff 0%,
+    color-mix(in oklch, var(--primary-light, #a5b4fc) 90%, #fff) 28%,
+    color-mix(in oklch, var(--accent, #22d3ee) 85%, #fff) 55%,
+    color-mix(in oklch, var(--accent-2, #c084fc) 80%, #fff) 78%,
+    #fff 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 12px oklch(0 0 0 / 0.35))
+    drop-shadow(0 0 28px color-mix(in oklch, var(--primary) 35%, transparent));
+  animation: hshsTitleShine 6s ease-in-out infinite, hshsFadeUp 0.8s ease both;
+}
+@keyframes hshsTitleShine {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero-motto {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem 0.75rem !important;
+  font-size: clamp(1.15rem, 3.2vw, 1.65rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em;
+  margin-block: 0.5rem 1rem !important;
+  text-transform: none;
+}
+.hero-motto > span:not(.motto-dot) {
+  background: linear-gradient(
+    135deg,
+    #fef3c7,
+    color-mix(in oklch, var(--accent, #22d3ee) 70%, #fff),
+    color-mix(in oklch, var(--primary-light, #c7d2fe) 80%, #fff)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 6px oklch(0 0 0 / 0.3));
+  animation: hshsMottoPulse 3.5s ease-in-out infinite;
+}
+.hero-motto > span:nth-child(1) { animation-delay: 0s; }
+.hero-motto > span:nth-child(3) { animation-delay: 0.4s; }
+.hero-motto > span:nth-child(5) { animation-delay: 0.8s; }
+.motto-dot {
+  color: color-mix(in oklch, var(--accent, #22d3ee) 80%, #fff) !important;
+  opacity: 0.9;
+  font-weight: 800;
+}
+@keyframes hshsMottoPulse {
+  0%, 100% { opacity: 0.92; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
+.school-badge {
+  animation: hshsFadeUp 0.6s ease both, hshsSoftGlow 4s ease-in-out infinite;
+}
+@keyframes hshsSoftGlow {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 20px color-mix(in oklch, var(--primary) 30%, transparent); }
+}
+
+/* ---- AI-like professional home animations ---- */
+.hero-grid {
+  animation: hshsGridDrift 28s linear infinite;
+  opacity: 0.35;
+}
+@keyframes hshsGridDrift {
+  from { background-position: 0 0; }
+  to { background-position: 80px 80px; }
+}
+
+.hero-particles {
+  animation: hshsParticleFloat 18s ease-in-out infinite alternate;
+}
+@keyframes hshsParticleFloat {
+  from { transform: translateY(0) scale(1); opacity: 0.5; }
+  to { transform: translateY(-18px) scale(1.03); opacity: 0.75; }
+}
+
+.hero-content > * {
+  animation: hshsFadeUp 0.7s ease both;
+}
+.hero-content > *:nth-child(1) { animation-delay: 0.05s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.12s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.2s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.28s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.36s; }
+.hero-content > *:nth-child(6) { animation-delay: 0.44s; }
+
+@keyframes hshsFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-number {
+  background: linear-gradient(135deg, #fff, color-mix(in oklch, var(--accent) 60%, #fff));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.search-box {
+  animation: hshsFadeUp 0.75s ease both 0.35s;
+  transition: box-shadow 0.35s ease, transform 0.25s ease;
+}
+.search-box:focus-within {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 25%, transparent),
+    0 16px 40px color-mix(in oklch, var(--primary) 18%, transparent);
+}
+
+.cards-grid .card,
+.papers-grid .paper-card,
+.notes-grid .paper-card,
+.subjects-grid .subject-card,
+.rec-row > *,
+.showcase-grid > *,
+.planner-card {
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease,
+    border-color 0.3s ease;
+}
+.cards-grid .card:hover,
+.papers-grid .paper-card:hover,
+.notes-grid .paper-card:hover,
+.subjects-grid .subject-card:hover,
+.rec-row > *:hover,
+.showcase-grid > *:hover,
+.planner-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px color-mix(in oklch, var(--primary) 16%, transparent);
+  border-color: color-mix(in oklch, var(--primary) 35%, var(--border, #e2e8f0));
+}
+
+.section-title {
+  position: relative;
+}
+.section-title::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  margin-block-start: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--accent, #22d3ee));
+  animation: hshsBarGrow 0.8s ease both;
+}
+@keyframes hshsBarGrow {
+  from { width: 0; opacity: 0; }
+  to { width: 48px; opacity: 1; }
+}
+
+/* Stagger reveal for cards when scrolled into view */
+.reveal-ai {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ai.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Body lock while intro plays */
+body.is-intro-locked {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-loader-ring,
+  .site-loader-bar > span,
+  .hero-title,
+  .hero-motto > span,
+  .hero-grid,
+  .hero-particles,
+  .school-badge {
+    animation: none !important;
+  }
+  .site-curtains .curtain {
+    transition-duration: 0.01ms !important;
+  }
+  .hero-title {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff;
+    background: none;
+  }
+}
