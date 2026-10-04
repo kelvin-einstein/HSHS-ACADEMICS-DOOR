@@ -52,26 +52,31 @@
   .logo { max-width: 160px; margin-inline-end: 0.25rem; }
 }
 
-/* ── Clear hero: no 4-color rainbow ── */
+/* ── AI professional color accents ── */
 :root {
   --ai-glow: 0 0 40px color-mix(in oklch, var(--primary) 35%, transparent);
   --ai-surface: color-mix(in oklch, var(--primary) 6%, var(--bg-card));
-  --hero-gradient: linear-gradient(160deg, oklch(0.16 0.07 265) 0%, oklch(0.24 0.10 265) 50%, oklch(0.28 0.08 250) 100%) !important;
 }
-[data-theme="dark"] {
-  --hero-gradient: linear-gradient(160deg, oklch(0.09 0.04 270) 0%, oklch(0.14 0.06 265) 50%, oklch(0.18 0.05 255) 100%) !important;
+[data-accent="cyan"] {
+  --primary: oklch(0.65 0.16 195);
+  --primary-dark: oklch(0.52 0.14 195);
+  --accent: oklch(0.72 0.14 180);
+  --accent-2: oklch(0.62 0.18 250);
+}
+[data-accent="violet"] {
+  --primary: oklch(0.58 0.22 300);
+  --primary-dark: oklch(0.48 0.2 300);
+  --accent: oklch(0.68 0.16 280);
+  --accent-2: oklch(0.62 0.18 250);
+}
+[data-accent="emerald"] {
+  --primary: oklch(0.62 0.16 160);
+  --primary-dark: oklch(0.5 0.14 160);
+  --accent: oklch(0.72 0.14 175);
+  --accent-2: oklch(0.58 0.12 200);
 }
 
-/* Stronger overlay so text on hero is always readable */
-.hero-overlay {
-  background: linear-gradient(
-    180deg,
-    oklch(0.12 0.06 265 / 0.55) 0%,
-    oklch(0.12 0.06 265 / 0.72) 100%
-  ) !important;
-}
-
-/* ── Page motion ── */
+/* ── Page motion / AI animations ── */
 @keyframes hshsFadeUp {
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
@@ -79,6 +84,10 @@
 @keyframes hshsSoftPulse {
   0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 0%, transparent); }
   50% { box-shadow: 0 0 24px color-mix(in oklch, var(--primary) 22%, transparent); }
+}
+@keyframes hshsShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 .reveal {
   animation: hshsFadeUp 0.55s ease both;
@@ -246,6 +255,24 @@
   color: var(--text-muted);
   margin-block-start: 0.15rem;
 }
+.accent-swatches {
+  display: flex;
+  gap: 0.4rem;
+}
+.accent-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.accent-swatch:hover { transform: scale(1.12); }
+.accent-swatch.active { border-color: var(--text); box-shadow: 0 0 0 2px var(--bg-card); }
+.accent-swatch[data-accent="indigo"] { background: linear-gradient(135deg, #6366f1, #a855f7); }
+.accent-swatch[data-accent="cyan"] { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+.accent-swatch[data-accent="violet"] { background: linear-gradient(135deg, #a855f7, #ec4899); }
+.accent-swatch[data-accent="emerald"] { background: linear-gradient(135deg, #10b981, #06b6d4); }
 .settings-toggle {
   width: 44px;
   height: 24px;

@@ -1,10 +1,2 @@
 /* Hawthorne-Scribner High School · Academics Door — full stylesheet */
 @import url('https://cdn.jsdelivr.net/gh/kelvin-einstein/HSHS-ACADEMICS-DOOR@99305f4da873ac383864642c6674a65249b947d4/css/styles.css');
-
-/* Override: remove the 4-color rainbow hero so content stays clearly visible */
-:root {
-  --hero-gradient: linear-gradient(160deg, oklch(0.16 0.07 265) 0%, oklch(0.24 0.10 265) 50%, oklch(0.28 0.08 250) 100%) !important;
-}
-[data-theme="dark"] {
-  --hero-gradient: linear-gradient(160deg, oklch(0.09 0.04 270) 0%, oklch(0.14 0.06 265) 50%, oklch(0.18 0.05 255) 100%) !important;
-}
