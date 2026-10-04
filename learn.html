@@ -31,16 +31,22 @@
 <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
 </div></div></header>
 <main id="main-content">
-<section class="page-hero learn-hero"><div class="container">
+<section class="learn-hero"><div class="container">
 <p class="school-badge">Digital Classroom</p>
 <h1>Online Learning</h1>
 <p>Courses, live classes, quizzes, community stats, and comments — everything in one place.</p>
-<div class="learn-hero-actions"><a href="#courses" class="btn btn-primary">Browse Courses</a><a href="#community" class="btn btn-outline">Community</a><a href="#camera" class="btn btn-outline">Open Camera</a></div>
+<div class="learn-hero-actions">
+<a href="#courses" class="btn btn-primary">Browse Courses</a>
+<a href="#community" class="btn btn-outline">Community</a>
+<a href="#camera" class="btn btn-outline">Open Camera</a>
+</div>
 </div></section>
+
 <section class="section"><div class="container">
 <h2 class="section-title">Everything for Online Learning</h2>
 <div class="learn-features-grid" id="learnFeatures"></div>
 </div></section>
+
 <section class="section learn-progress-section"><div class="container">
 <div class="section-header"><h2 class="section-title">Your Progress</h2><span class="progress-badge">This term</span></div>
 <div class="progress-overview">
@@ -51,13 +57,21 @@
 <div class="progress-stat reveal"><span class="num">3</span><span class="lbl">Quizzes passed</span></div>
 <div class="progress-stat reveal"><span class="num">2</span><span class="lbl">Certificates</span></div>
 </div></div></div></section>
+
 <section class="section" id="courses"><div class="container">
 <div class="section-header"><h2 class="section-title">Courses</h2>
-<div class="course-filters"><button type="button" class="chip active" data-filter="all">All</button><button type="button" class="chip" data-filter="math">Mathematics</button><button type="button" class="chip" data-filter="science">Science</button><button type="button" class="chip" data-filter="languages">Languages</button></div></div>
+<div class="course-filters">
+<button type="button" class="chip active" data-filter="all">All</button>
+<button type="button" class="chip" data-filter="math">Mathematics</button>
+<button type="button" class="chip" data-filter="science">Science</button>
+<button type="button" class="chip" data-filter="languages">Languages</button>
+</div></div>
 <div class="courses-grid" id="coursesGrid"></div></div></section>
+
 <section class="section" id="live"><div class="container">
 <div class="section-header"><h2 class="section-title">Live Classes</h2></div>
 <div class="live-grid" id="liveGrid"></div></div></section>
+
 <section class="section learn-camera-section" id="camera" aria-labelledby="camera-title">
 <div class="container">
 <h2 class="section-title" id="camera-title">Class Camera</h2>
@@ -82,20 +96,22 @@
 </div>
 </div>
 </section>
+
 <section class="section" id="assessments"><div class="container">
 <h2 class="section-title">Assignments & Quizzes</h2>
 <div class="assess-grid">
 <div class="assess-col"><h3 class="assess-heading">Upcoming assignments</h3><div id="assignmentsList"></div></div>
 <div class="assess-col"><h3 class="assess-heading">Quizzes</h3><div id="quizzesList"></div></div>
 </div></div></section>
+
 <section class="section" id="certificates"><div class="container">
 <h2 class="section-title">Certificates & Badges</h2>
 <div class="certs-grid" id="certsGrid"></div></div></section>
 
 <section class="section" id="community">
   <div class="container">
-    <h2 class="section-title">School Community</h2>
-    <p class="section-lead" style="margin-block-end:1.5rem">Downloads, active students, subject popularity, and comments — all in one place.</p>
+    <h2 class="section-title" style="text-align:center">School Community</h2>
+    <p class="section-lead">Downloads, active students, subject popularity, and comments — all in one place.</p>
     <div class="community-stats">
       <div class="community-stat reveal"><span class="number">1,240+</span><span class="label">Total Downloads</span></div>
       <div class="community-stat reveal"><span class="number">460</span><span class="label">Active Students</span></div>
@@ -112,9 +128,9 @@
 </section>
 
 <section class="section" id="comments">
-  <div class="container" style="max-width: 720px;">
+  <div class="container">
     <h2 class="section-title">Community Comments</h2>
-    <p class="section-lead" style="margin-block-end:1.25rem">Share thoughts, questions, or feedback with fellow students.</p>
+    <p class="section-lead" style="text-align:left;margin-inline:0">Share thoughts, questions, or feedback with fellow students.</p>
     <div class="comment-form-card reveal">
       <h3>Leave a Comment</h3>
       <form id="commentForm">
@@ -153,13 +169,13 @@
     var el = document.getElementById(id);
     if (!el) return;
     new Chart(el, { type: 'bar', data: { labels: labels, datasets: [{ data: data, backgroundColor: primary, borderRadius: 8 }] },
-      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { color: muted } }, x: { ticks: { color: muted } } } } });
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { color: muted }, grid: { color: 'rgba(128,128,128,0.15)' } }, x: { ticks: { color: muted }, grid: { display: false } } } } });
   }
   function line(id, labels, data) {
     var el = document.getElementById(id);
     if (!el) return;
-    new Chart(el, { type: 'line', data: { labels: labels, datasets: [{ data: data, borderColor: primary, backgroundColor: 'transparent', tension: 0.35 }] },
-      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { color: muted } }, x: { ticks: { color: muted } } } } });
+    new Chart(el, { type: 'line', data: { labels: labels, datasets: [{ data: data, borderColor: primary, backgroundColor: 'transparent', tension: 0.35, borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: primary }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { color: muted }, grid: { color: 'rgba(128,128,128,0.15)' } }, x: { ticks: { color: muted }, grid: { display: false } } } } });
   }
   bar('subjectsChart', ['Math','Chem','Bio','Eng','Phys','Hist'], [420, 310, 280, 250, 200, 150]);
   bar('downloadsChart', ['Jan','Mar','May','Jul','Sep','Oct'], [80, 120, 160, 200, 260, 320]);
