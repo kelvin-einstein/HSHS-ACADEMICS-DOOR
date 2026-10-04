@@ -1,6 +1,5 @@
 /**
- * HSHS Settings panel — theme, profile, notifications, data
- * Accent colour picker removed for a single clear professional palette.
+ * HSHS Settings panel — theme, accent, profile, notifications, data
  */
 (function () {
   "use strict";
@@ -91,6 +90,15 @@
       '        <button type="button" class="settings-toggle" id="settingsDarkToggle" aria-label="Toggle dark mode"></button>' +
       '      </div>' +
       '      <div class="settings-row">' +
+      '        <div><div class="settings-row-label">Accent colour</div><div class="settings-row-desc">AI-style professional palette</div></div>' +
+      '        <div class="accent-swatches">' +
+      '          <button type="button" class="accent-swatch" data-accent="indigo" title="Indigo" aria-label="Indigo"></button>' +
+      '          <button type="button" class="accent-swatch" data-accent="cyan" title="Cyan" aria-label="Cyan"></button>' +
+      '          <button type="button" class="accent-swatch" data-accent="violet" title="Violet" aria-label="Violet"></button>' +
+      '          <button type="button" class="accent-swatch" data-accent="emerald" title="Emerald" aria-label="Emerald"></button>' +
+      '        </div>' +
+      '      </div>' +
+      '      <div class="settings-row">' +
       '        <div><div class="settings-row-label">Reduce motion</div><div class="settings-row-desc">Minimise animations</div></div>' +
       '        <button type="button" class="settings-toggle" id="settingsMotionToggle" aria-label="Reduce motion"></button>' +
       '      </div>' +
@@ -145,6 +153,11 @@
     var darkBtn = document.getElementById("settingsDarkToggle");
     if (darkBtn) darkBtn.classList.toggle("is-on", theme === "dark");
 
+    var accent = localStorage.getItem("hshs-accent") || "indigo";
+    document.querySelectorAll(".accent-swatch").forEach(function (s) {
+      s.classList.toggle("active", s.dataset.accent === accent);
+    });
+
     var notif = document.getElementById("settingsNotifToggle");
     if (notif) notif.classList.toggle("is-on", getBool(NOTIF_KEY, true));
     var motion = document.getElementById("settingsMotionToggle");
@@ -163,6 +176,15 @@
         prev.removeAttribute("src");
       }
     }
+  }
+
+  function applyAccent(name) {
+    localStorage.setItem("hshs-accent", name);
+    document.documentElement.setAttribute("data-accent", name);
+    document.querySelectorAll(".accent-swatch").forEach(function (s) {
+      s.classList.toggle("active", s.dataset.accent === name);
+    });
+    toast("Accent set to " + name, "success");
   }
 
   function applyReduceMotion(on) {
@@ -195,10 +217,8 @@
     ensureStyles();
     injectSettingsUI();
 
-    // Always use the single clear default palette (no accent switching)
-    document.documentElement.removeAttribute("data-accent");
-    localStorage.removeItem("hshs-accent");
-
+    var accent = localStorage.getItem("hshs-accent") || "indigo";
+    document.documentElement.setAttribute("data-accent", accent);
     if (getBool(REDUCE_MOTION_KEY, false)) applyReduceMotion(true);
     if (getBool(COMPACT_KEY, false)) applyCompact(true);
 
@@ -218,6 +238,10 @@
       localStorage.setItem("hshs-theme", next);
       this.classList.toggle("is-on", next === "dark");
       toast(next === "dark" ? "Dark mode on" : "Light mode on", "info");
+    });
+
+    document.querySelectorAll(".accent-swatch").forEach(function (s) {
+      s.addEventListener("click", function () { applyAccent(s.dataset.accent); });
     });
 
     document.getElementById("settingsMotionToggle") && document.getElementById("settingsMotionToggle").addEventListener("click", function () {
