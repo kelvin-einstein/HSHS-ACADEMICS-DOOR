@@ -18,27 +18,27 @@
   };
 
   const features = [
-    { title: "Video Lessons", desc: "On-demand recorded lessons you can watch anytime, pause and rewind.", icon: ICON.video },
-    { title: "Structured Courses", desc: "Modules, units and learning paths organised by subject and level.", icon: ICON.book },
-    { title: "Quizzes & Tests", desc: "Interactive quizzes with instant feedback and score tracking.", icon: ICON.quiz },
-    { title: "Assignments", desc: "Submit homework online, get deadlines and teacher feedback.", icon: ICON.assign },
-    { title: "Progress Tracking", desc: "See completion rates, streaks and weak topics at a glance.", icon: ICON.progress },
-    { title: "Live Classes", desc: "Join real-time sessions with teachers and classmates.", icon: ICON.live },
-    { title: "Discussion Forums", desc: "Ask questions, share tips and study together.", icon: ICON.discuss },
-    { title: "Certificates", desc: "Earn digital certificates and badges when you finish courses.", icon: ICON.cert },
-    { title: "Class Schedule", desc: "Calendar of upcoming lessons, exams and live sessions.", icon: ICON.calendar },
-    { title: "Study Groups", desc: "Form or join groups for collaborative revision.", icon: ICON.users },
-    { title: "Offline Downloads", desc: "Save notes and lessons for offline study.", icon: ICON.download },
-    { title: "AI Study Helper", desc: "Get hints, summaries and practice questions powered by AI.", icon: ICON.ai }
+    { title: "Video Lessons", desc: "On-demand recorded lessons you can watch anytime.", icon: ICON.video },
+    { title: "Structured Courses", desc: "Modules and learning paths by subject.", icon: ICON.book },
+    { title: "Quizzes & Tests", desc: "Interactive quizzes with instant feedback.", icon: ICON.quiz },
+    { title: "Assignments", desc: "Submit homework online with deadlines.", icon: ICON.assign },
+    { title: "Progress Tracking", desc: "Completion rates and weak topics.", icon: ICON.progress },
+    { title: "Live Classes", desc: "Real-time sessions with teachers.", icon: ICON.live },
+    { title: "Discussion Forums", desc: "Ask questions and study together.", icon: ICON.discuss },
+    { title: "Certificates", desc: "Digital certificates when you finish.", icon: ICON.cert },
+    { title: "Class Schedule", desc: "Calendar of lessons and exams.", icon: ICON.calendar },
+    { title: "Study Groups", desc: "Collaborative revision groups.", icon: ICON.users },
+    { title: "Offline Downloads", desc: "Save lessons for offline study.", icon: ICON.download },
+    { title: "AI Study Helper", desc: "Hints and practice questions.", icon: ICON.ai }
   ];
 
   const courses = [
-    { id: 1, title: "Form 4 Mathematics – Paper 1", cat: "math", tag: "Mathematics", lessons: 18, pct: 72, desc: "Algebra, geometry and calculus foundations for national exams." },
-    { id: 2, title: "Organic Chemistry Mastery", cat: "science", tag: "Chemistry", lessons: 12, pct: 45, desc: "Functional groups, reactions and exam-style practice." },
-    { id: 3, title: "Cell Biology & Genetics", cat: "science", tag: "Biology", lessons: 14, pct: 90, desc: "From cell structure to inheritance and DNA." },
-    { id: 4, title: "English Literature – Set Texts", cat: "languages", tag: "English", lessons: 10, pct: 30, desc: "Analysis, essays and themes for Form 4 literature." },
-    { id: 5, title: "Newton's Laws & Motion", cat: "science", tag: "Physics", lessons: 9, pct: 55, desc: "Forces, energy and practical problem-solving." },
-    { id: 6, title: "Quadratic Equations Deep Dive", cat: "math", tag: "Mathematics", lessons: 8, pct: 100, desc: "Factoring, formula and graphing — fully complete." }
+    { id: 1, title: "Form 4 Mathematics – Paper 1", cat: "math", tag: "Mathematics", lessons: 18, pct: 72, desc: "Algebra, geometry and calculus foundations." },
+    { id: 2, title: "Organic Chemistry Mastery", cat: "science", tag: "Chemistry", lessons: 12, pct: 45, desc: "Functional groups and reactions." },
+    { id: 3, title: "Cell Biology & Genetics", cat: "science", tag: "Biology", lessons: 14, pct: 90, desc: "Cell structure to inheritance." },
+    { id: 4, title: "English Literature – Set Texts", cat: "languages", tag: "English", lessons: 10, pct: 30, desc: "Analysis and essay writing." },
+    { id: 5, title: "Newton's Laws & Motion", cat: "science", tag: "Physics", lessons: 9, pct: 55, desc: "Forces and energy." },
+    { id: 6, title: "Quadratic Equations Deep Dive", cat: "math", tag: "Mathematics", lessons: 8, pct: 100, desc: "Fully complete." }
   ];
 
   const liveClasses = [
@@ -91,7 +91,7 @@
             <div class="course-progress-bar" aria-hidden="true"><span style="width:${c.pct}%"></span></div>
             <span class="course-pct">${c.pct}%</span>
           </div>
-          <button type="button" class="btn btn-primary btn-sm" style="margin-block-start:0.85rem;width:100%" onclick="alert('Opening course: ${c.title.replace(/'/g, "\\'")}')">${c.pct === 100 ? "Review" : c.pct > 0 ? "Continue" : "Start"}</button>
+          <button type="button" class="btn btn-primary btn-sm" style="margin-block-start:0.85rem;width:100%">${c.pct === 100 ? "Review" : c.pct > 0 ? "Continue" : "Start"}</button>
         </div>
       </article>`).join("");
   }
@@ -150,6 +150,80 @@
     });
   }
 
+  var cameraStream = null;
+  function initCamera() {
+    var startBtn = document.getElementById("cameraStart");
+    var stopBtn = document.getElementById("cameraStop");
+    var snapBtn = document.getElementById("cameraSnap");
+    var video = document.getElementById("learnCamera");
+    var placeholder = document.getElementById("cameraPlaceholder");
+    var status = document.getElementById("cameraStatus");
+    var canvas = document.getElementById("cameraCanvas");
+    if (!startBtn || !video) return;
+
+    startBtn.addEventListener("click", function () {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        if (status) status.textContent = "Camera not supported in this browser";
+        return;
+      }
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
+        .then(function (stream) {
+          cameraStream = stream;
+          video.srcObject = stream;
+          video.play();
+          if (placeholder) placeholder.hidden = true;
+          if (status) { status.textContent = "Camera live"; status.classList.add("is-live"); }
+          startBtn.disabled = true;
+          if (stopBtn) stopBtn.disabled = false;
+          if (snapBtn) snapBtn.disabled = false;
+        })
+        .catch(function (err) {
+          if (status) status.textContent = "Permission denied or no camera found";
+          console.warn(err);
+        });
+    });
+
+    if (stopBtn) {
+      stopBtn.addEventListener("click", function () {
+        if (cameraStream) {
+          cameraStream.getTracks().forEach(function (t) { t.stop(); });
+          cameraStream = null;
+        }
+        video.srcObject = null;
+        if (placeholder) placeholder.hidden = false;
+        if (status) { status.textContent = "Camera off"; status.classList.remove("is-live"); }
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        if (snapBtn) snapBtn.disabled = true;
+      });
+      stopBtn.disabled = true;
+    }
+
+    if (snapBtn) {
+      snapBtn.disabled = true;
+      snapBtn.addEventListener("click", function () {
+        if (!video.videoWidth) return;
+        if (!canvas) {
+          canvas = document.createElement("canvas");
+          canvas.id = "cameraCanvas";
+          canvas.hidden = true;
+          document.body.appendChild(canvas);
+        }
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext("2d").drawImage(video, 0, 0);
+        canvas.toBlob(function (blob) {
+          if (!blob) return;
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "hshs-class-snapshot.png";
+          a.click();
+          URL.revokeObjectURL(a.href);
+        }, "image/png");
+      });
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderFeatures();
     renderCourses();
@@ -157,5 +231,6 @@
     renderAssess();
     renderCerts();
     setupFilters();
+    initCamera();
   });
 })();
