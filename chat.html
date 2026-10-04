@@ -47,7 +47,6 @@
     </div>
   </header>
 
-  <!-- Sign-in gate -->
   <div class="chat-gate" id="chatGate" hidden>
     <div class="chat-gate-icon">
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -120,11 +119,26 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
             </button>
             <div class="attach-menu" id="attachMenu" hidden role="menu">
-              <button type="button" class="attach-item" data-action="photo" role="menuitem">Photo</button>
-              <button type="button" class="attach-item" data-action="video" role="menuitem">Video</button>
-              <button type="button" class="attach-item" data-action="document" role="menuitem">Document</button>
-              <button type="button" class="attach-item" data-action="poll" role="menuitem">Poll</button>
-              <button type="button" class="attach-item" data-action="location" role="menuitem">Location</button>
+              <button type="button" class="attach-item" data-action="photo" role="menuitem">
+                <span class="attach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span>
+                <span>Photo</span>
+              </button>
+              <button type="button" class="attach-item" data-action="video" role="menuitem">
+                <span class="attach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></span>
+                <span>Video</span>
+              </button>
+              <button type="button" class="attach-item" data-action="document" role="menuitem">
+                <span class="attach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h6"/></svg></span>
+                <span>Document</span>
+              </button>
+              <button type="button" class="attach-item" data-action="poll" role="menuitem">
+                <span class="attach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>
+                <span>Poll</span>
+              </button>
+              <button type="button" class="attach-item" data-action="location" role="menuitem">
+                <span class="attach-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                <span>Location</span>
+              </button>
             </div>
           </div>
           <button type="button" class="chat-icon-btn" id="emojiBtn" title="Emoji" aria-label="Emoji" aria-haspopup="true" aria-expanded="false">
