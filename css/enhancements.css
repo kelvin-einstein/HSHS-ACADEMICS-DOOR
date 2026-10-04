@@ -1,5 +1,114 @@
 /* HSHS — AI professional enhancements */
 
+/* ── Register color tokens so browsers can interpolate them smoothly ── */
+@property --primary {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(0.58 0.22 265);
+}
+@property --primary-dark {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(0.48 0.22 265);
+}
+@property --primary-light {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(0.72 0.16 255);
+}
+@property --accent {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(0.72 0.18 195);
+}
+@property --accent-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(0.65 0.2 310);
+}
+
+/* ── Smooth colour morph when accent / theme changes ── */
+html {
+  transition:
+    --primary 0.45s ease,
+    --primary-dark 0.45s ease,
+    --primary-light 0.45s ease,
+    --accent 0.45s ease,
+    --accent-2 0.45s ease;
+}
+
+body,
+.header,
+.btn,
+.btn-primary,
+.btn-outline,
+.nav-link,
+.card,
+.paper-card,
+.subject-card,
+.logo-badge,
+.settings-btn,
+.settings-toggle,
+.settings-toggle.is-on,
+.settings-close,
+.profile-btn,
+.theme-toggle,
+.school-badge,
+.search-btn,
+.chip,
+.course-card,
+.progress-card,
+.live-card,
+.assess-item,
+.cert-card,
+.footer a,
+.view-all {
+  transition:
+    background-color 0.45s ease,
+    background 0.45s ease,
+    color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    fill 0.45s ease,
+    stroke 0.45s ease;
+}
+
+/* Keep motion polish on top of colour transitions */
+.card:hover,
+.paper-card:hover,
+.subject-card:hover {
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease,
+    border-color 0.45s ease,
+    background-color 0.45s ease,
+    color 0.45s ease;
+}
+
+.nav-link {
+  transition:
+    color 0.45s ease,
+    background 0.45s ease,
+    background-color 0.45s ease,
+    transform 0.2s ease;
+}
+
+.logo-badge {
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease,
+    background-color 0.45s ease;
+}
+
+.settings-btn {
+  transition:
+    color 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    transform 0.25s ease,
+    background-color 0.45s ease;
+}
+
 /* ── Logo spacing (no collision with Home) ── */
 .header-inner {
   gap: 1.5rem !important;
@@ -92,22 +201,11 @@
 .reveal {
   animation: hshsFadeUp 0.55s ease both;
 }
-.card:hover,
-.paper-card:hover,
-.subject-card:hover {
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.25s ease;
-}
 .btn-primary {
   animation: hshsSoftPulse 4s ease-in-out infinite;
 }
-.logo-badge {
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-}
 .logo:hover .logo-badge {
   transform: scale(1.08) rotate(-3deg);
-}
-.nav-link {
-  transition: color 0.2s, background 0.2s, transform 0.2s;
 }
 .nav-link:hover {
   transform: translateY(-1px);
@@ -152,7 +250,6 @@
   color: var(--text-muted);
   background: transparent;
   cursor: pointer;
-  transition: all 0.25s ease;
 }
 .settings-btn:hover {
   color: var(--primary);
@@ -265,10 +362,13 @@
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .accent-swatch:hover { transform: scale(1.12); }
-.accent-swatch.active { border-color: var(--text); box-shadow: 0 0 0 2px var(--bg-card); }
+.accent-swatch.active {
+  border-color: var(--text);
+  box-shadow: 0 0 0 2px var(--bg-card);
+}
 .accent-swatch[data-accent="indigo"] { background: linear-gradient(135deg, #6366f1, #a855f7); }
 .accent-swatch[data-accent="cyan"] { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
 .accent-swatch[data-accent="violet"] { background: linear-gradient(135deg, #a855f7, #ec4899); }
@@ -281,7 +381,7 @@
   border: none;
   position: relative;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.45s ease;
   flex-shrink: 0;
 }
 .settings-toggle::after {
@@ -293,7 +393,7 @@
   background: #fff;
   top: 3px;
   left: 3px;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
   box-shadow: 0 1px 3px rgba(0,0,0,.2);
 }
 .settings-toggle.is-on {
@@ -308,7 +408,7 @@
   padding: 1.25rem;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.45s ease, background 0.45s ease;
   background: var(--bg);
 }
 .settings-profile-drop.is-dragover,
@@ -389,4 +489,22 @@
 .camera-status.is-live {
   color: var(--success);
   font-weight: 600;
+}
+
+/* Respect reduce-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none !important;
+  }
+  body,
+  .header,
+  .btn,
+  .btn-primary,
+  .btn-outline,
+  .nav-link,
+  .card,
+  .settings-btn,
+  .settings-toggle {
+    transition: none !important;
+  }
 }
