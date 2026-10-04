@@ -20,6 +20,8 @@
     (function() {
       const t = localStorage.getItem('hshs-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', t);
+      const a = localStorage.getItem('hshs-accent') || 'indigo';
+      document.documentElement.setAttribute('data-accent', a);
     })();
   </script>
 </head>
