@@ -1,0 +1,22 @@
+/* Larger school name + motto so they dominate the hero */
+.hero-title {
+  font-size: clamp(2.6rem, 8vw, 5.2rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.05 !important;
+  margin-block-end: 1rem !important;
+  letter-spacing: -0.045em !important;
+  text-shadow: 0 4px 40px oklch(0 0 0 / 0.35) !important;
+  max-inline-size: 18ch;
+  margin-inline: auto;
+}
+.hero-motto {
+  font-size: clamp(1.15rem, 3.2vw, 1.75rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.22em !important;
+  gap: 0.85rem !important;
+  margin-block-end: 1.35rem !important;
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: clamp(2.1rem, 9vw, 2.8rem) !important; }
+  .hero-motto { font-size: clamp(0.95rem, 3.5vw, 1.15rem) !important; letter-spacing: 0.12em !important; }
+}
