@@ -34,6 +34,25 @@
   let activeId = null;
   let nextId = 6;
 
+  var CHAT_KEY = "hshs-chats";
+  function loadChats() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(CHAT_KEY));
+      if (Array.isArray(saved) && saved.length) {
+        conversations = saved;
+        var maxId = 0;
+        conversations.forEach(function(c){ if (c.id > maxId) maxId = c.id; });
+        nextId = maxId + 1;
+      }
+    } catch (e) {}
+  }
+  function saveChats() {
+    try {
+      localStorage.setItem(CHAT_KEY, JSON.stringify(conversations));
+    } catch (e) {}
+  }
+  loadChats();
+
   function isLoggedIn() {
     return window.HSHSAuth && window.HSHSAuth.isLoggedIn && window.HSHSAuth.isLoggedIn();
   }
@@ -113,6 +132,7 @@
     conv.time = "Just now";
     input.value = "";
     openConversation(activeId);
+    saveChats();
   }
 
   function closeMenus() {
@@ -223,6 +243,7 @@
           conv.preview = "Shared location";
           openConversation(activeId);
           toast("Location shared", "success");
+          saveChats();
         }
       }
     });
@@ -239,6 +260,7 @@
     conv.preview = "Sent a file";
     openConversation(activeId);
     toast("File attached", "success");
+    saveChats();
     document.getElementById("fileInput").value = "";
   });
 
@@ -271,6 +293,7 @@
     renderConversations();
     openConversation(id);
     toast("Chat started with " + name, "success");
+    saveChats();
   });
 
   document.getElementById("confirmNewGroup") && document.getElementById("confirmNewGroup").addEventListener("click", function(){
@@ -284,6 +307,7 @@
     renderConversations();
     openConversation(id);
     toast('Group "' + name + '" created', "success");
+    saveChats();
   });
 
   document.getElementById("addPollOption") && document.getElementById("addPollOption").addEventListener("click", function(){
@@ -308,6 +332,7 @@
     document.getElementById("pollQuestion").value = "";
     openConversation(activeId);
     toast("Poll sent", "success");
+    saveChats();
   });
 
   document.getElementById("chatSearch") && document.getElementById("chatSearch").addEventListener("input", function(e){ renderConversations(e.target.value); });
