@@ -120,8 +120,8 @@
     var ep = document.getElementById("emojiPicker");
     var ab = document.getElementById("attachBtn");
     var eb = document.getElementById("emojiBtn");
-    if (am) am.hidden = true;
-    if (ep) ep.hidden = true;
+    if (am) { am.hidden = true; am.setAttribute("hidden", ""); am.classList.remove("is-open"); }
+    if (ep) { ep.hidden = true; ep.setAttribute("hidden", ""); ep.classList.remove("is-open"); }
     if (ab) ab.setAttribute("aria-expanded", "false");
     if (eb) eb.setAttribute("aria-expanded", "false");
   }
@@ -142,25 +142,68 @@
   document.getElementById("sendBtn") && document.getElementById("sendBtn").addEventListener("click", sendMessage);
   document.getElementById("messageInput") && document.getElementById("messageInput").addEventListener("keypress", function(e){ if (e.key === "Enter") sendMessage(); });
 
-  document.getElementById("attachBtn") && document.getElementById("attachBtn").addEventListener("click", function(e){
-    e.stopPropagation();
+  function toggleAttachMenu(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
     var menu = document.getElementById("attachMenu");
     var btn = document.getElementById("attachBtn");
-    var open = menu.hidden;
-    closeMenus();
-    if (open) { menu.hidden = false; btn.setAttribute("aria-expanded", "true"); }
-  });
+    if (!menu || !btn) return;
+    var willOpen = menu.hidden || menu.hasAttribute("hidden");
+    var ep = document.getElementById("emojiPicker");
+    var eb = document.getElementById("emojiBtn");
+    if (ep) { ep.hidden = true; ep.setAttribute("hidden", ""); ep.classList.remove("is-open"); }
+    if (eb) eb.setAttribute("aria-expanded", "false");
+    if (willOpen) {
+      menu.hidden = false;
+      menu.removeAttribute("hidden");
+      menu.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+    } else {
+      menu.hidden = true;
+      menu.setAttribute("hidden", "");
+      menu.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  }
 
-  document.getElementById("emojiBtn") && document.getElementById("emojiBtn").addEventListener("click", function(e){
-    e.stopPropagation();
+  function toggleEmojiPicker(e) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
     var picker = document.getElementById("emojiPicker");
     var btn = document.getElementById("emojiBtn");
-    var open = picker.hidden;
+    if (!picker || !btn) return;
+    var willOpen = picker.hidden || picker.hasAttribute("hidden");
+    var am = document.getElementById("attachMenu");
+    var ab = document.getElementById("attachBtn");
+    if (am) { am.hidden = true; am.setAttribute("hidden", ""); am.classList.remove("is-open"); }
+    if (ab) ab.setAttribute("aria-expanded", "false");
+    if (willOpen) {
+      picker.hidden = false;
+      picker.removeAttribute("hidden");
+      picker.classList.add("is-open");
+      btn.setAttribute("aria-expanded", "true");
+    } else {
+      picker.hidden = true;
+      picker.setAttribute("hidden", "");
+      picker.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  var attachBtnEl = document.getElementById("attachBtn");
+  if (attachBtnEl) attachBtnEl.addEventListener("click", toggleAttachMenu);
+  var emojiBtnEl = document.getElementById("emojiBtn");
+  if (emojiBtnEl) emojiBtnEl.addEventListener("click", toggleEmojiPicker);
+
+  document.addEventListener("click", function(e) {
+    var wrap = document.querySelector(".chat-attach-wrap");
+    var emojiBtn = document.getElementById("emojiBtn");
+    var emojiPicker = document.getElementById("emojiPicker");
+    var target = e.target;
+    if (wrap && wrap.contains(target)) return;
+    if (emojiBtn && (emojiBtn === target || emojiBtn.contains(target))) return;
+    if (emojiPicker && emojiPicker.contains(target)) return;
     closeMenus();
-    if (open) { picker.hidden = false; btn.setAttribute("aria-expanded", "true"); }
   });
 
-  document.addEventListener("click", closeMenus);
   document.getElementById("attachMenu") && document.getElementById("attachMenu").addEventListener("click", function(e){ e.stopPropagation(); });
   document.getElementById("emojiPicker") && document.getElementById("emojiPicker").addEventListener("click", function(e){ e.stopPropagation(); });
 
