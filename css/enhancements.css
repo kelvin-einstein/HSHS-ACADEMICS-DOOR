@@ -52,28 +52,10 @@
   .logo { max-width: 160px; margin-inline-end: 0.25rem; }
 }
 
-/* ── AI professional color accents ── */
+/* ── Single clear professional palette (no multi-accent switching) ── */
 :root {
   --ai-glow: 0 0 40px color-mix(in oklch, var(--primary) 35%, transparent);
   --ai-surface: color-mix(in oklch, var(--primary) 6%, var(--bg-card));
-}
-[data-accent="cyan"] {
-  --primary: oklch(0.65 0.16 195);
-  --primary-dark: oklch(0.52 0.14 195);
-  --accent: oklch(0.72 0.14 180);
-  --accent-2: oklch(0.62 0.18 250);
-}
-[data-accent="violet"] {
-  --primary: oklch(0.58 0.22 300);
-  --primary-dark: oklch(0.48 0.2 300);
-  --accent: oklch(0.68 0.16 280);
-  --accent-2: oklch(0.62 0.18 250);
-}
-[data-accent="emerald"] {
-  --primary: oklch(0.62 0.16 160);
-  --primary-dark: oklch(0.5 0.14 160);
-  --accent: oklch(0.72 0.14 175);
-  --accent-2: oklch(0.58 0.12 200);
 }
 
 /* ── Page motion ── */
@@ -255,24 +237,6 @@
   color: var(--text-muted);
   margin-block-start: 0.15rem;
 }
-.accent-swatches {
-  display: flex;
-  gap: 0.4rem;
-}
-.accent-swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
-}
-.accent-swatch:hover { transform: scale(1.12); }
-.accent-swatch.active { border-color: var(--text); box-shadow: 0 0 0 2px var(--bg-card); }
-.accent-swatch[data-accent="indigo"] { background: linear-gradient(135deg, #6366f1, #a855f7); }
-.accent-swatch[data-accent="cyan"] { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
-.accent-swatch[data-accent="violet"] { background: linear-gradient(135deg, #a855f7, #ec4899); }
-.accent-swatch[data-accent="emerald"] { background: linear-gradient(135deg, #10b981, #06b6d4); }
 .settings-toggle {
   width: 44px;
   height: 24px;

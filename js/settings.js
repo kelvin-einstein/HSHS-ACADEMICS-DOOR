@@ -1,5 +1,6 @@
 /**
- * HSHS Settings panel — theme, accent, profile, notifications, data
+ * HSHS Settings panel — theme, profile, notifications, data
+ * Accent colour picker removed for a single clear professional palette.
  */
 (function () {
   "use strict";
@@ -43,7 +44,6 @@
   function injectSettingsUI() {
     if (document.getElementById("settingsOverlay")) return;
 
-    // Settings button in header
     var actions = document.querySelector(".header-actions");
     if (actions && !document.getElementById("settingsBtn")) {
       var btn = document.createElement("button");
@@ -89,15 +89,6 @@
       '      <div class="settings-row">' +
       '        <div><div class="settings-row-label">Dark mode</div><div class="settings-row-desc">Toggle light / dark theme</div></div>' +
       '        <button type="button" class="settings-toggle" id="settingsDarkToggle" aria-label="Toggle dark mode"></button>' +
-      '      </div>' +
-      '      <div class="settings-row">' +
-      '        <div><div class="settings-row-label">Accent colour</div><div class="settings-row-desc">AI-style professional palette</div></div>' +
-      '        <div class="accent-swatches">' +
-      '          <button type="button" class="accent-swatch" data-accent="indigo" title="Indigo" aria-label="Indigo"></button>' +
-      '          <button type="button" class="accent-swatch" data-accent="cyan" title="Cyan" aria-label="Cyan"></button>' +
-      '          <button type="button" class="accent-swatch" data-accent="violet" title="Violet" aria-label="Violet"></button>' +
-      '          <button type="button" class="accent-swatch" data-accent="emerald" title="Emerald" aria-label="Emerald"></button>' +
-      '        </div>' +
       '      </div>' +
       '      <div class="settings-row">' +
       '        <div><div class="settings-row-label">Reduce motion</div><div class="settings-row-desc">Minimise animations</div></div>' +
@@ -154,11 +145,6 @@
     var darkBtn = document.getElementById("settingsDarkToggle");
     if (darkBtn) darkBtn.classList.toggle("is-on", theme === "dark");
 
-    var accent = localStorage.getItem("hshs-accent") || "indigo";
-    document.querySelectorAll(".accent-swatch").forEach(function (s) {
-      s.classList.toggle("active", s.dataset.accent === accent);
-    });
-
     var notif = document.getElementById("settingsNotifToggle");
     if (notif) notif.classList.toggle("is-on", getBool(NOTIF_KEY, true));
     var motion = document.getElementById("settingsMotionToggle");
@@ -177,15 +163,6 @@
         prev.removeAttribute("src");
       }
     }
-  }
-
-  function applyAccent(name) {
-    localStorage.setItem("hshs-accent", name);
-    document.documentElement.setAttribute("data-accent", name);
-    document.querySelectorAll(".accent-swatch").forEach(function (s) {
-      s.classList.toggle("active", s.dataset.accent === name);
-    });
-    toast("Accent set to " + name, "success");
   }
 
   function applyReduceMotion(on) {
@@ -218,9 +195,10 @@
     ensureStyles();
     injectSettingsUI();
 
-    // Restore prefs
-    var accent = localStorage.getItem("hshs-accent") || "indigo";
-    document.documentElement.setAttribute("data-accent", accent);
+    // Always use the single clear default palette (no accent switching)
+    document.documentElement.removeAttribute("data-accent");
+    localStorage.removeItem("hshs-accent");
+
     if (getBool(REDUCE_MOTION_KEY, false)) applyReduceMotion(true);
     if (getBool(COMPACT_KEY, false)) applyCompact(true);
 
@@ -233,7 +211,6 @@
       if (e.key === "Escape") closeSettings();
     });
 
-    // Dark mode
     document.getElementById("settingsDarkToggle") && document.getElementById("settingsDarkToggle").addEventListener("click", function () {
       var cur = document.documentElement.getAttribute("data-theme") || "light";
       var next = cur === "dark" ? "light" : "dark";
@@ -243,12 +220,6 @@
       toast(next === "dark" ? "Dark mode on" : "Light mode on", "info");
     });
 
-    // Accents
-    document.querySelectorAll(".accent-swatch").forEach(function (s) {
-      s.addEventListener("click", function () { applyAccent(s.dataset.accent); });
-    });
-
-    // Motion / compact / notif
     document.getElementById("settingsMotionToggle") && document.getElementById("settingsMotionToggle").addEventListener("click", function () {
       var on = !this.classList.contains("is-on");
       this.classList.toggle("is-on", on);
@@ -268,7 +239,6 @@
       toast(on ? "Reminders enabled" : "Reminders off", "info");
     });
 
-    // Profile drop in settings
     var drop = document.getElementById("settingsProfileDrop");
     var input = document.getElementById("settingsProfileInput");
     if (drop && input) {
@@ -300,7 +270,6 @@
       toast("Profile photo removed", "info");
     });
 
-    // Data commands
     document.getElementById("settingsExport") && document.getElementById("settingsExport").addEventListener("click", function () {
       var data = {
         comments: JSON.parse(localStorage.getItem("hshs-comments") || "[]"),
