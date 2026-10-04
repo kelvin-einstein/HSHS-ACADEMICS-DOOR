@@ -52,10 +52,23 @@
   .logo { max-width: 160px; margin-inline-end: 0.25rem; }
 }
 
-/* ── Single clear professional palette (no multi-accent switching) ── */
+/* ── Clear hero: no 4-color rainbow ── */
 :root {
   --ai-glow: 0 0 40px color-mix(in oklch, var(--primary) 35%, transparent);
   --ai-surface: color-mix(in oklch, var(--primary) 6%, var(--bg-card));
+  --hero-gradient: linear-gradient(160deg, oklch(0.16 0.07 265) 0%, oklch(0.24 0.10 265) 50%, oklch(0.28 0.08 250) 100%) !important;
+}
+[data-theme="dark"] {
+  --hero-gradient: linear-gradient(160deg, oklch(0.09 0.04 270) 0%, oklch(0.14 0.06 265) 50%, oklch(0.18 0.05 255) 100%) !important;
+}
+
+/* Stronger overlay so text on hero is always readable */
+.hero-overlay {
+  background: linear-gradient(
+    180deg,
+    oklch(0.12 0.06 265 / 0.55) 0%,
+    oklch(0.12 0.06 265 / 0.72) 100%
+  ) !important;
 }
 
 /* ── Page motion ── */
@@ -66,10 +79,6 @@
 @keyframes hshsSoftPulse {
   0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 0%, transparent); }
   50% { box-shadow: 0 0 24px color-mix(in oklch, var(--primary) 22%, transparent); }
-}
-@keyframes hshsShimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
 .reveal {
   animation: hshsFadeUp 0.55s ease both;
