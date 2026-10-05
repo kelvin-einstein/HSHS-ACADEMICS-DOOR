@@ -192,9 +192,9 @@
     normalizeMessage(m);
     if (m.type === "poll") return renderPoll(m);
     if (m.type === "file") {
-      return '<div class="message ' + (m.sent ? "sent" : "received") + '"><div class="file-bubble">📎 ' + escapeHtml(m.text) + '</div><div class="msg-time">' + escapeHtml(m.time) + '</div></div>';
+      return '<div class="message-row ' + (m.sent ? "is-sent" : "is-received") + '"><img class="message-avatar" src="' + escapeHtml(localStorage.getItem("hshs-profile-photo") || "") + '" alt="" ' + (localStorage.getItem("hshs-profile-photo") ? "" : "hidden") + '><div class="message ' + (m.sent ? "sent" : "received") + '"><div class="file-bubble">📎 ' + escapeHtml(m.text) + '</div><div class="msg-time">' + escapeHtml(m.time) + '</div></div></div>';
     }
-    return '<div class="message ' + (m.sent ? "sent" : "received") + '">' + escapeHtml(m.text) + '<div class="msg-time">' + escapeHtml(m.time) + '</div></div>';
+    return '<div class="message-row ' + (m.sent ? "is-sent" : "is-received") + '"><img class="message-avatar" src="' + escapeHtml(localStorage.getItem("hshs-profile-photo") || "") + '" alt="" ' + (localStorage.getItem("hshs-profile-photo") ? "" : "hidden") + '><div class="message ' + (m.sent ? "sent" : "received") + '">' + escapeHtml(m.text) + '<div class="msg-time">' + escapeHtml(m.time) + '</div></div></div>';
   }
 
   function findMessage(msgId) {
