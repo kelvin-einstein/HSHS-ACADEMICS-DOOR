@@ -621,3 +621,13 @@
 .call-ctrl-end:hover {
   background: #ef4444;
 }
+
+/* Premium message treatment */
+.message-row{display:flex;align-items:flex-end;gap:.5rem;max-width:min(78%,520px)}
+.message-row.is-sent{align-self:flex-end;flex-direction:row-reverse}
+.message-row.is-received{align-self:flex-start}
+.message-row .message{max-width:100%}
+.message-avatar{width:28px;height:28px;border-radius:10px;object-fit:cover;flex:0 0 28px;box-shadow:0 4px 12px rgba(15,23,42,.14);border:2px solid var(--bg-card,#fff)}
+.message-avatar[hidden]{display:none!important}
+.message-row.is-sent .message-avatar{display:block}
+@media(max-width:600px){.message-row{max-width:90%}}
