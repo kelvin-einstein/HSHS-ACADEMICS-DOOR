@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>HSHS Academics Door — Academic Hub</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/academic-hub.css">
+</head>
+<body>
+<header class="ah-header">
+  <div class="ah-container ah-nav">
+    <a href="index.html" class="ah-brand"><span class="ah-logo">H</span><span><b>HSHS</b><small>ACADEMICS DOOR</small></span></a>
+    <nav><a href="#dashboard">Dashboard</a><a href="#learning">Learning</a><a href="#exams">Exams</a><a href="#library">Library</a><a href="#careers">Careers</a></nav>
+    <div class="ah-actions"><button id="hubTheme" aria-label="Toggle theme">◐</button><a class="ah-back" href="index.html">← Main site</a></div>
+  </div>
+</header>
+
+<main>
+<section class="ah-hero" id="dashboard">
+ <div class="ah-container hero-grid">
+  <div>
+   <span class="eyebrow">THE NEXT GENERATION OF SCHOOL LEARNING</span>
+   <h1>Welcome to the <span>HSHS Academic Hub.</span></h1>
+   <p>One intelligent academic space for learning, revision, examinations, careers, projects and student achievement.</p>
+   <div class="hero-buttons"><a class="ah-primary" href="#learning">Start Learning →</a><a class="ah-secondary" href="#exams">Explore Exams</a></div>
+  </div>
+  <div class="orbit-card"><div class="orbit"><div class="orbit-core">HSHS<br><small>ACADEMIC<br>EXCELLENCE</small></div><i>📚</i><i>🧪</i><i>💻</i><i>🎯</i></div></div>
+ </div>
+</section>
+
+<section class="ah-container stats" aria-label="Academic overview">
+ <div><b>12+</b><span>Learning Areas</span></div><div><b id="progressStat">68%</b><span>Learning Progress</span></div><div><b>24/7</b><span>Digital Access</span></div><div><b id="badgeStat">3</b><span>Achievement Badges</span></div>
+</section>
+
+<section class="ah-section" id="learning"><div class="ah-container">
+ <div class="section-head"><div><span class="eyebrow">LEARNING HUB</span><h2>Everything you need to master a topic.</h2></div><div class="hub-search"><input id="hubSearch" placeholder="Search topics, notes, resources…"><span>⌕</span></div></div>
+ <div class="feature-grid">
+  <article class="feature-card featured-card"><span>🧠</span><h3>Smart Study Assistant</h3><p>Choose a subject and get a safe study prompt, explanation plan or practice session.</p><div class="quick-prompts"><button data-prompt="Explain photosynthesis simply">Explain a topic</button><button data-prompt="Give me 5 practice questions">Practice me</button><button data-prompt="Help me revise">Revision mode</button></div></article>
+  <article class="feature-card"><span>📝</span><h3>Quiz Centre</h3><p>Test yourself with quick questions and track your score.</p><button class="text-btn" id="openQuiz">Start a quiz →</button></article>
+  <article class="feature-card"><span>🧪</span><h3>Virtual Laboratory</h3><p>Explore Biology, Chemistry and Physics simulations safely.</p><div class="pill-row"><button data-lab="Biology">Biology</button><button data-lab="Chemistry">Chemistry</button><button data-lab="Physics">Physics</button></div></article>
+  <article class="feature-card"><span>💻</span><h3>ICT & Coding Academy</h3><p>Build digital skills through web development and coding challenges.</p><a class="text-btn" href="#coding">Open Coding Academy →</a></article>
+ </div>
+ <div class="learning-board">
+  <div><h3>📌 Continue Learning</h3><div class="lesson"><div><b>Biology — Cell Structure</b><small>Lesson 4 of 6</small></div><div class="bar"><i style="width:68%"></i></div><b>68%</b></div><div class="lesson"><div><b>Mathematics — Algebra</b><small>Practice set</small></div><div class="bar"><i style="width:45%"></i></div><b>45%</b></div></div>
+  <div><h3>⚡ Quick Actions</h3><div class="action-grid"><a href="#library">📚 Library</a><a href="#analytics">📊 Analytics</a><a href="#careers">🎯 Careers</a><a href="#achievements">🏆 Badges</a></div></div>
+ </div>
+</div></section>
+
+<section class="ah-section alt" id="exams"><div class="ah-container">
+ <div class="section-head"><div><span class="eyebrow">EXAMINATION CENTRE</span><h2>Prepare. Practice. Perform.</h2></div><div class="countdown" id="examCountdown">Loading countdown…</div></div>
+ <div class="exam-grid">
+  <div class="exam-panel"><h3>📅 Examination Planner</h3><form id="examAdd"><input id="examName" required placeholder="Exam / subject"><input id="examDate" required type="date"><button>Add</button></form><div id="examItems"></div></div>
+  <div class="exam-panel"><h3>📋 Revision Checklist</h3><label><input type="checkbox"> Review class notes</label><label><input type="checkbox"> Attempt past papers</label><label><input type="checkbox"> Mark difficult topics</label><label><input type="checkbox"> Take a timed quiz</label><label><input type="checkbox"> Review mistakes</label></div>
+  <div class="exam-panel"><h3>🎓 Results & Performance</h3><div class="mini-bars"><span style="--v:82%">Biology <i></i></span><span style="--v:76%">Mathematics <i></i></span><span style="--v:88%">ICT <i></i></span><span style="--v:71%">Chemistry <i></i></span></div><p class="muted">Demo analytics — connect to your school's results system later.</p></div>
+ </div>
+</div></section>
+
+<section class="ah-section" id="library"><div class="ah-container">
+ <span class="eyebrow">DIGITAL LIBRARY</span><h2>Find your next resource.</h2>
+ <div class="library-search"><input id="librarySearch" placeholder="Try: photosynthesis, algebra, coding…"></div>
+ <div class="resource-grid" id="resourceGrid"></div>
+</div></section>
+
+<section class="ah-section alt" id="careers"><div class="ah-container">
+ <span class="eyebrow">CAREER GUIDANCE CENTRE</span><h2>Turn subjects into possibilities.</h2>
+ <div class="career-grid">
+  <article><b>PCM</b><h3>Science & Technology</h3><p>Explore pathways such as engineering, computer science, mathematics, physics and related technology fields.</p><span>Subjects → Courses → Careers</span></article>
+  <article><b>PCB</b><h3>Health & Life Sciences</h3><p>Explore medicine, pharmacy, biomedical science, nursing, dentistry and related fields.</p><span>Subjects → Courses → Careers</span></article>
+  <article><b>BCM / ICT</b><h3>Business & Digital World</h3><p>Explore computing, information systems, business technology, analytics and digital entrepreneurship.</p><span>Subjects → Courses → Careers</span></article>
+ </div>
+</div></section>
+
+<section class="ah-section" id="coding"><div class="ah-container">
+ <span class="eyebrow">ICT & CODING ACADEMY</span><h2>Build. Experiment. Create.</h2>
+ <div class="code-road"><div><b>01</b><h3>Web Foundations</h3><p>HTML · CSS · Accessibility</p></div><div><b>02</b><h3>Interactive Web</h3><p>JavaScript · APIs · UI</p></div><div><b>03</b><h3>Programming</h3><p>Python · Algorithms · Data</p></div><div><b>04</b><h3>Projects</h3><p>Build and showcase your ideas</p></div></div>
+</div></section>
+
+<section class="ah-section alt" id="analytics"><div class="ah-container">
+ <span class="eyebrow">ACADEMIC ANALYTICS</span><h2>See your learning journey.</h2>
+ <div class="analytics-grid"><div class="chart"><h3>Subject Progress</h3><div class="chart-bars"><span style="--h:82%">BIO</span><span style="--h:76%">MATH</span><span style="--h:88%">ICT</span><span style="--h:71%">CHEM</span><span style="--h:80%">ENG</span></div></div><div class="insight"><h3>✨ Your learning insights</h3><p>Keep practising consistently. Use past papers to identify topics that need more attention.</p><div class="insight-line">Weekly study target <b>4 / 6 sessions</b></div><div class="insight-line">Resources explored <b>18</b></div><div class="insight-line">Quiz accuracy <b>84%</b></div></div></div>
+</div></section>
+
+<section class="ah-section" id="achievements"><div class="ah-container">
+ <span class="eyebrow">HALL OF ACHIEVEMENT</span><h2>Celebrate academic growth.</h2>
+ <div class="badges"><div>🏆<b>Quiz Master</b><small>5 quizzes completed</small></div><div>🔬<b>Young Scientist</b><small>Science learning streak</small></div><div>💻<b>Coding Explorer</b><small>First web project</small></div><div class="locked">🔒<b>Revision Champion</b><small>Complete 10 sessions</small></div></div>
+</div></section>
+
+<section class="ah-section alt"><div class="ah-container">
+ <div class="section-head"><div><span class="eyebrow">ACADEMIC NOTICEBOARD</span><h2>Stay ahead.</h2></div><span class="live-dot">● LIVE BOARD</span></div>
+ <div class="notice-grid"><article><small>ACADEMIC</small><h3>Past-paper revision is now available</h3><p>Use the existing Resources area for your school materials.</p></article><article><small>ICT</small><h3>Build something worth showcasing</h3><p>Use the Coding Academy to plan your next project.</p></article><article><small>CAREERS</small><h3>Explore your subject combination</h3><p>Start with your strongest subjects and investigate related courses.</p></article></div>
+</div></section>
+</main>
+
+<div class="quiz-modal" id="quizModal" hidden><div class="quiz-box"><button class="close" id="closeQuiz">×</button><span class="eyebrow">QUICK QUIZ</span><h2 id="quizQuestion"></h2><div id="quizAnswers"></div><p id="quizScore"></p></div></div>
+<footer class="ah-footer"><div class="ah-container"><b>HSHS ACADEMICS DOOR</b><span>Educate · Engage · Empower</span><a href="index.html">Return to the existing website →</a></div></footer>
+<script src="js/academic-hub.js"></script>
+</body>
+</html>
