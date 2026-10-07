@@ -1,67 +1,78 @@
 /* ============================================================
-   HSHS Academics Door — Glassmorphism system
-   Frosted panels over ambient backgrounds (all pages)
+   HSHS Academics Door — Bright glassmorphism system
+   Luminous frosted UI over ambient backgrounds (all pages)
    ============================================================ */
 
 :root {
-  --glass-bg: oklch(1 0 0 / 0.55);
-  --glass-bg-strong: oklch(1 0 0 / 0.72);
-  --glass-bg-soft: oklch(1 0 0 / 0.35);
-  --glass-border: oklch(1 0 0 / 0.28);
-  --glass-border-soft: oklch(1 0 0 / 0.14);
-  --glass-highlight: oklch(1 0 0 / 0.45);
-  --glass-shadow: 0 8px 32px oklch(0.2 0.04 275 / 0.1),
-    0 1px 0 oklch(1 0 0 / 0.4) inset;
-  --glass-blur: 16px;
-  --glass-blur-strong: 24px;
+  /* Bright glass tokens */
+  --glass-bg: oklch(1 0 0 / 0.72);
+  --glass-bg-strong: oklch(1 0 0 / 0.88);
+  --glass-bg-soft: oklch(1 0 0 / 0.5);
+  --glass-border: oklch(1 0 0 / 0.55);
+  --glass-border-soft: oklch(1 0 0 / 0.32);
+  --glass-highlight: oklch(1 0 0 / 0.75);
+  --glass-glow: 0 0 40px color-mix(in oklch, var(--primary, #6366f1) 18%, transparent);
+  --glass-shadow:
+    0 10px 36px oklch(0.45 0.08 265 / 0.1),
+    0 2px 0 oklch(1 0 0 / 0.65) inset,
+    0 -1px 0 oklch(0.7 0.05 265 / 0.08) inset;
+  --glass-blur: 18px;
+  --glass-blur-strong: 28px;
   --glass-blur-light: 12px;
 }
 
 [data-theme="dark"] {
-  --glass-bg: oklch(0.22 0.03 275 / 0.45);
-  --glass-bg-strong: oklch(0.2 0.03 275 / 0.72);
-  --glass-bg-soft: oklch(0.25 0.03 275 / 0.28);
-  --glass-border: oklch(1 0 0 / 0.12);
-  --glass-border-soft: oklch(1 0 0 / 0.08);
-  --glass-highlight: oklch(1 0 0 / 0.08);
-  --glass-shadow: 0 12px 40px oklch(0 0 0 / 0.35),
-    0 1px 0 oklch(1 0 0 / 0.06) inset;
+  --glass-bg: oklch(0.28 0.04 275 / 0.55);
+  --glass-bg-strong: oklch(0.24 0.035 275 / 0.78);
+  --glass-bg-soft: oklch(0.32 0.04 275 / 0.38);
+  --glass-border: oklch(1 0 0 / 0.18);
+  --glass-border-soft: oklch(1 0 0 / 0.1);
+  --glass-highlight: oklch(1 0 0 / 0.12);
+  --glass-glow: 0 0 48px color-mix(in oklch, var(--primary, #818cf8) 28%, transparent);
+  --glass-shadow:
+    0 14px 44px oklch(0 0 0 / 0.4),
+    0 1px 0 oklch(1 0 0 / 0.1) inset;
 }
 
 /* —— Utility classes —— */
 .glass {
   background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
   border: 1px solid var(--glass-border) !important;
   box-shadow: var(--glass-shadow);
 }
 
 .glass-strong {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.25);
-  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.25);
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.4);
   border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-shadow), var(--glass-glow);
 }
 
 .glass-soft {
   background: var(--glass-bg-soft) !important;
-  backdrop-filter: blur(var(--glass-blur-light)) saturate(1.1);
-  -webkit-backdrop-filter: blur(var(--glass-blur-light)) saturate(1.1);
+  backdrop-filter: blur(var(--glass-blur-light)) saturate(1.25);
+  -webkit-backdrop-filter: blur(var(--glass-blur-light)) saturate(1.25);
   border: 1px solid var(--glass-border-soft) !important;
 }
 
 .glass-brand {
-  background: color-mix(in oklch, var(--primary, #6366f1) 12%, transparent) !important;
-  backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.2);
-  border: 1px solid color-mix(in oklch, var(--primary, #6366f1) 28%, transparent) !important;
-  box-shadow: 0 8px 28px color-mix(in oklch, var(--primary, #6366f1) 12%, transparent),
-    0 1px 0 oklch(1 0 0 / 0.2) inset;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in oklch, var(--primary, #6366f1) 18%, oklch(1 0 0 / 0.7)),
+      color-mix(in oklch, var(--accent, #22d3ee) 10%, oklch(1 0 0 / 0.65))
+    ) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  border: 1px solid color-mix(in oklch, var(--primary, #6366f1) 35%, transparent) !important;
+  box-shadow:
+    0 10px 32px color-mix(in oklch, var(--primary, #6366f1) 16%, transparent),
+    0 2px 0 oklch(1 0 0 / 0.5) inset;
 }
 
-/* Edge highlight (top light edge) */
 .glass::before,
 .glass-strong::before {
   content: "";
@@ -70,12 +81,12 @@
   border-radius: inherit;
   pointer-events: none;
   background: linear-gradient(
-    135deg,
+    125deg,
     var(--glass-highlight) 0%,
-    transparent 42%,
+    transparent 38%,
     transparent 100%
   );
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
 .glass,
@@ -86,7 +97,9 @@
   overflow: hidden;
 }
 
-/* —— Global components → glass —— */
+/* ============================================================
+   HOME — cards, planner, papers, subjects
+   ============================================================ */
 .card,
 .paper-card,
 .subject-card,
@@ -100,10 +113,13 @@
 .community-stat,
 .progress-stat,
 .assess-item,
-.cert-card {
+.cert-card,
+.learn-feature-card,
+.assignment-card,
+.quiz-card {
   background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--glass-blur)) saturate(1.12);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.12);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
   border: 1px solid var(--glass-border) !important;
   box-shadow: var(--glass-shadow) !important;
   transition:
@@ -118,35 +134,39 @@
 .subject-card:hover,
 .planner-card:hover,
 .course-card:hover,
-.feature-card:hover {
-  border-color: color-mix(in oklch, var(--primary, #6366f1) 35%, var(--glass-border)) !important;
+.feature-card:hover,
+.live-card:hover,
+.learn-feature-card:hover {
+  border-color: color-mix(in oklch, var(--primary, #6366f1) 40%, var(--glass-border)) !important;
   box-shadow:
-    0 16px 40px color-mix(in oklch, var(--primary, #6366f1) 14%, transparent),
-    0 1px 0 oklch(1 0 0 / 0.35) inset !important;
+    0 18px 44px color-mix(in oklch, var(--primary, #6366f1) 16%, transparent),
+    0 2px 0 oklch(1 0 0 / 0.55) inset,
+    var(--glass-glow) !important;
+  transform: translateY(-4px);
 }
 
-/* Search / inputs glass */
 .search-box,
 .hub-search,
 .library-search {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(20px) saturate(1.35);
+  -webkit-backdrop-filter: blur(20px) saturate(1.35);
   border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow);
+  box-shadow: var(--glass-shadow), var(--glass-glow);
 }
 
-/* —— Headers (already partial; reinforce) —— */
 .header,
 .ah-header {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(22px) saturate(1.25) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(1.25) !important;
+  backdrop-filter: blur(24px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.4) !important;
   border-bottom: 1px solid var(--glass-border-soft) !important;
-  box-shadow: 0 4px 24px oklch(0.2 0.04 275 / 0.06);
+  box-shadow: 0 6px 28px oklch(0.4 0.06 265 / 0.08);
 }
 
-/* —— Academic Hub glass —— */
+/* ============================================================
+   ACADEMIC HUB — bright glass panels
+   ============================================================ */
 .feature-card,
 .exam-panel,
 .resource,
@@ -160,140 +180,252 @@
 .badges div,
 .countdown {
   background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.15);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.35);
   border: 1px solid var(--glass-border) !important;
   box-shadow: var(--glass-shadow) !important;
 }
 
 .featured-card {
-  background: color-mix(in oklch, var(--ah-primary, #635bff) 14%, var(--glass-bg)) !important;
-  border-color: color-mix(in oklch, var(--ah-primary, #635bff) 30%, var(--glass-border)) !important;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in oklch, var(--ah-primary, #635bff) 16%, oklch(1 0 0 / 0.75)),
+      var(--glass-bg)
+    ) !important;
+  border-color: color-mix(in oklch, var(--ah-primary, #635bff) 38%, var(--glass-border)) !important;
+  box-shadow: var(--glass-shadow), 0 0 36px color-mix(in oklch, var(--ah-primary, #635bff) 20%, transparent) !important;
 }
 
 .orbit i {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
   border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow);
 }
 
-/* Hub / Study / Lab modals — heavy glass */
 .study-panel,
 .lab-modal,
 .quiz-modal {
-  background: oklch(0.08 0.03 275 / 0.45) !important;
-  backdrop-filter: blur(12px) saturate(1.1) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.1) !important;
+  background: oklch(0.15 0.04 275 / 0.35) !important;
+  backdrop-filter: blur(14px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.15) !important;
 }
 
 .study-box,
 .lab-box,
 .quiz-box {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.3) !important;
-  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.3) !important;
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.45) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.45) !important;
   border: 1px solid var(--glass-border) !important;
   box-shadow:
-    0 24px 60px oklch(0 0 0 / 0.25),
-    0 1px 0 oklch(1 0 0 / 0.35) inset !important;
+    0 28px 64px oklch(0 0 0 / 0.2),
+    0 2px 0 oklch(1 0 0 / 0.6) inset,
+    var(--glass-glow) !important;
 }
 
-/* —— Chat glass —— */
+/* ============================================================
+   LEARN PAGE — courses, progress, community, camera
+   ============================================================ */
+.learn-hero {
+  position: relative;
+}
+
+.learn-features-grid > *,
+.courses-grid > *,
+.live-grid > *,
+.certs-grid > *,
+#assignmentsList > *,
+#quizzesList > * {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+
+.progress-ring,
+.chip.active {
+  box-shadow: 0 0 20px color-mix(in oklch, var(--primary, #6366f1) 25%, transparent);
+}
+
+.chip {
+  background: var(--glass-bg-soft) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border-soft) !important;
+}
+
+.chip.active {
+  background: color-mix(in oklch, var(--primary, #6366f1) 18%, oklch(1 0 0 / 0.7)) !important;
+  border-color: color-mix(in oklch, var(--primary, #6366f1) 40%, transparent) !important;
+  color: var(--primary, #6366f1);
+  font-weight: 700;
+}
+
+.camera-panel,
+.students-photo-frame {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow), var(--glass-glow) !important;
+}
+
+.community-stats .community-stat,
+.charts-grid .chart-card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.3);
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+
+/* ============================================================
+   CHAT PAGE — bright glass messaging
+   ============================================================ */
 .chat-sidebar {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(20px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(1.2) !important;
+  backdrop-filter: blur(22px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.4) !important;
   border-inline-end: 1px solid var(--glass-border-soft) !important;
+  box-shadow: 4px 0 32px oklch(0.4 0.06 265 / 0.06);
 }
 
 .chat-main-header,
 .chat-input-bar {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(18px) saturate(1.15) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(1.15) !important;
+  backdrop-filter: blur(20px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.35) !important;
   border-color: var(--glass-border-soft) !important;
+}
+
+.chat-search input {
+  background: var(--glass-bg-soft) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border-soft) !important;
 }
 
 .message.received {
   background: var(--glass-bg) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
   border: 1px solid var(--glass-border) !important;
-  box-shadow: 0 4px 16px oklch(0 0 0 / 0.06);
+  box-shadow: 0 6px 20px oklch(0.4 0.05 265 / 0.08);
 }
 
 .message.sent {
-  box-shadow: 0 6px 20px color-mix(in oklch, var(--primary, #6366f1) 28%, transparent);
+  box-shadow:
+    0 8px 24px color-mix(in oklch, var(--primary, #6366f1) 32%, transparent),
+    0 1px 0 oklch(1 0 0 / 0.25) inset;
 }
 
 .attach-menu,
 .emoji-picker {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(20px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(1.2) !important;
+  backdrop-filter: blur(22px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.4) !important;
   border: 1px solid var(--glass-border) !important;
-  box-shadow: 0 16px 40px oklch(0 0 0 / 0.18) !important;
+  box-shadow: 0 18px 48px oklch(0 0 0 / 0.14), var(--glass-glow) !important;
 }
 
 .conversation-item.active {
-  background: color-mix(in oklch, var(--primary, #6366f1) 14%, transparent) !important;
-  border: 1px solid color-mix(in oklch, var(--primary, #6366f1) 22%, transparent);
-  backdrop-filter: blur(8px);
+  background: color-mix(in oklch, var(--primary, #6366f1) 14%, oklch(1 0 0 / 0.5)) !important;
+  border: 1px solid color-mix(in oklch, var(--primary, #6366f1) 28%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px color-mix(in oklch, var(--primary, #6366f1) 12%, transparent);
 }
 
-/* Chat gate + generic modals */
+[data-theme="dark"] .conversation-item.active {
+  background: color-mix(in oklch, var(--primary, #818cf8) 18%, transparent) !important;
+}
+
 .chat-gate {
   background: transparent !important;
 }
 
-.modal-overlay {
-  background: oklch(0.1 0.02 275 / 0.4) !important;
-  backdrop-filter: blur(10px) saturate(1.05) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(1.05) !important;
+.chat-gate-icon,
+.chat-empty {
+  /* bright glass callout */
+}
+
+.chat-empty {
+  background: var(--glass-bg-soft);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: 24px;
+  margin: 1.5rem;
+  box-shadow: var(--glass-shadow);
+}
+
+/* ============================================================
+   MODALS & SETTINGS — bright heavy glass
+   ============================================================ */
+.modal-overlay,
+.settings-overlay {
+  background: oklch(0.2 0.04 275 / 0.32) !important;
+  backdrop-filter: blur(12px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.1) !important;
 }
 
 .modal-card {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.25) !important;
-  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.25) !important;
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.45) !important;
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.45) !important;
   border: 1px solid var(--glass-border) !important;
   box-shadow:
-    0 24px 60px oklch(0 0 0 / 0.22),
-    0 1px 0 oklch(1 0 0 / 0.3) inset !important;
+    0 28px 64px oklch(0 0 0 / 0.18),
+    0 2px 0 oklch(1 0 0 / 0.55) inset,
+    var(--glass-glow) !important;
 }
 
-/* Settings panel glass */
 .settings-panel {
   background: var(--glass-bg-strong) !important;
-  backdrop-filter: blur(24px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(1.2) !important;
+  backdrop-filter: blur(28px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(1.4) !important;
+  border-inline-start: 1px solid var(--glass-border) !important;
 }
 
-.settings-overlay {
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-/* Camera panel / students photo frame */
-.camera-panel,
-.students-photo-frame {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
-}
-
-/* Streak / showcase */
+/* ============================================================
+   SHARED — streak, showcase, recs, buttons
+   ============================================================ */
 .streak-bar,
 .showcase-grid > *,
 .rec-row > * {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  border: 1px solid var(--glass-border-soft) !important;
+  box-shadow: var(--glass-shadow);
 }
 
-/* Fallbacks */
+.btn-outline {
+  background: var(--glass-bg-soft) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border) !important;
+}
+
+.btn-outline:hover {
+  background: var(--glass-bg) !important;
+  border-color: color-mix(in oklch, var(--primary, #6366f1) 40%, transparent) !important;
+  box-shadow: 0 0 20px color-mix(in oklch, var(--primary, #6366f1) 15%, transparent);
+}
+
+.school-badge {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow);
+}
+
+/* ============================================================
+   Fallbacks & a11y
+   ============================================================ */
 @supports not (backdrop-filter: blur(1px)) {
   .glass,
   .glass-strong,
@@ -309,8 +441,12 @@
   .chat-sidebar,
   .modal-card,
   .study-box,
-  .lab-box {
-    background: var(--bg-card, var(--ah-card, #fff)) !important;
+  .lab-box,
+  .course-card,
+  .progress-card,
+  .chart-card,
+  .comment-form-card {
+    background: oklch(0.99 0.005 265) !important;
   }
   [data-theme="dark"] .glass,
   [data-theme="dark"] .glass-strong,
@@ -318,7 +454,7 @@
   [data-theme="dark"] .feature-card,
   [data-theme="dark"] .chat-sidebar,
   [data-theme="dark"] .modal-card {
-    background: var(--bg-card, var(--ah-card, #111827)) !important;
+    background: oklch(0.18 0.03 275) !important;
   }
 }
 
@@ -336,8 +472,11 @@
   .study-box,
   .lab-box,
   .header,
-  .ah-header {
-    background: var(--bg-card, var(--ah-card, #fff)) !important;
+  .ah-header,
+  .course-card,
+  .progress-card,
+  .chart-card {
+    background: oklch(0.99 0.005 265) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -346,7 +485,8 @@
   [data-theme="dark"] .card,
   [data-theme="dark"] .feature-card,
   [data-theme="dark"] .header,
-  [data-theme="dark"] .ah-header {
-    background: var(--bg-card, var(--ah-card, #111827)) !important;
+  [data-theme="dark"] .ah-header,
+  [data-theme="dark"] .chat-sidebar {
+    background: oklch(0.18 0.03 275) !important;
   }
 }
