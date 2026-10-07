@@ -40,8 +40,11 @@
 @media(max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr)!important}}
 @media(max-width:600px){.feature-grid{grid-template-columns:1fr!important}}
 </style>
+<link rel="stylesheet" href="css/ambient-bg.css?v=20261007" />
 </head>
 <body>
+  <div class="hshs-orbs" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
 <header class="ah-header">
   <div class="ah-container ah-nav">
     <a href="index.html" class="ah-brand"><span class="ah-logo">H</span><span><b>HSHS</b><small>ACADEMICS DOOR</small></span></a>
@@ -125,7 +128,6 @@
 </div></section>
 </main>
 
-<!-- Study Assistant panel (hidden until opened) -->
 <div class="study-panel" id="studyPanel" hidden>
   <div class="study-box">
     <button class="close" id="closeStudy" aria-label="Close">×</button>
@@ -143,7 +145,6 @@
   </div>
 </div>
 
-<!-- Virtual Lab modal (hidden until opened) -->
 <div class="lab-modal" id="labModal" hidden>
   <div class="lab-box">
     <button class="close" id="closeLab" aria-label="Close">×</button>
