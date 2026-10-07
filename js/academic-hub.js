@@ -11,9 +11,15 @@
     localStorage.setItem('hshs-theme', t);
   });
 
+  /* Ensure panels never block the page on load */
+  const studyPanel = document.getElementById('studyPanel');
+  const labModal = document.getElementById('labModal');
+  if (studyPanel) studyPanel.hidden = true;
+  if (labModal) labModal.hidden = true;
+
   /* —— Digital Library —— */
   const resources = [
-    ['Biology', 'Cell Structure', 'Notes · Revision · Quiz'],
+    ['Biology', 'Cell Structure', 'Notes · Revision'],
     ['Biology', 'Photosynthesis', 'Notes · Practice'],
     ['Biology', 'Genetics & Inheritance', 'Notes · Diagrams'],
     ['Mathematics', 'Algebra', 'Worked examples · Questions'],
@@ -50,7 +56,6 @@
   });
 
   /* —— Smart Study Assistant —— */
-  const studyPanel = document.getElementById('studyPanel');
   const studyOutput = document.getElementById('studyOutput');
   document.querySelectorAll('[data-prompt]').forEach(b => b.addEventListener('click', () => {
     const prompt = b.dataset.prompt;
@@ -58,8 +63,8 @@
     if (studyOutput) {
       const responses = {
         'Explain a topic': 'Pick a subject below, then type a topic (e.g. photosynthesis). You will get a simple explanation, key points, and a short practice question.',
-        'Practice me': 'Choose a subject and difficulty. You will receive 5 practice questions with answers you can reveal one by one.',
-        'Revision mode': 'Select topics you want to revise. The hub will build a short checklist and spaced-repetition style reminders using local storage.'
+        'Practice me': 'Choose a subject and difficulty. You will receive practice steps with answers you can work through.',
+        'Revision mode': 'Select topics you want to revise. The hub will build a short checklist using local storage.'
       };
       const key = Object.keys(responses).find(k => prompt.toLowerCase().includes(k.toLowerCase().split(' ')[0])) || prompt;
       studyOutput.innerHTML = `<p><strong>Mode:</strong> ${prompt}</p><p>${responses[key] || 'Type a topic in the box below and press Go to start.'}</p>`;
@@ -73,7 +78,7 @@
     if (studyOutput) {
       studyOutput.innerHTML = `
         <p><strong>${subject} — ${topic}</strong></p>
-        <p><em>Key points (demo study plan):</em></p>
+        <p><em>Key points (study plan):</em></p>
         <ol>
           <li>Define the core concept in one sentence.</li>
           <li>List 3–5 important terms and what they mean.</li>
@@ -81,15 +86,15 @@
           <li>Answer one past-paper style question from the Resources section.</li>
           <li>Explain the topic out loud to a classmate or in Chat.</li>
         </ol>
-        <p class="muted">This is a local study coach. Connect a real AI or school content API later for live explanations.</p>`;
+        <p class="muted">Local study coach — you can connect a real AI or school content API later.</p>`;
     }
   });
   document.getElementById('closeStudy')?.addEventListener('click', () => {
     if (studyPanel) studyPanel.hidden = true;
   });
+  studyPanel?.addEventListener('click', e => { if (e.target === studyPanel) studyPanel.hidden = true; });
 
   /* —— Virtual Laboratory —— */
-  const labModal = document.getElementById('labModal');
   const labTitle = document.getElementById('labTitle');
   const labBody = document.getElementById('labBody');
   const labContent = {
@@ -218,51 +223,6 @@
   tick();
   setInterval(tick, 60000);
 
-  /* —— Quiz —— */
-  const questions = [
-    { q: 'Which organelle is mainly responsible for aerobic respiration?', a: ['Nucleus', 'Mitochondrion', 'Ribosome', 'Cell wall'], c: 1 },
-    { q: 'What does HTML primarily provide?', a: ['Page structure', 'Electric current', 'Database storage', 'Image editing'], c: 0 },
-    { q: 'Which is a renewable energy source?', a: ['Coal', 'Oil', 'Solar energy', 'Natural gas'], c: 2 },
-    { q: 'What is the product of neutralisation of an acid and a base?', a: ['Only gas', 'Salt and water', 'Only metal', 'Only acid'], c: 1 },
-    { q: 'In a simple circuit, what must be closed for current to flow?', a: ['The switch', 'The textbook', 'The window', 'The door'], c: 0 }
-  ];
-  let qi = 0, score = 0;
-  const modal = document.getElementById('quizModal');
-  const qq = document.getElementById('quizQuestion');
-  const qa = document.getElementById('quizAnswers');
-  const qs = document.getElementById('quizScore');
-  function quiz() {
-    if (qi >= questions.length) {
-      if (qq) qq.textContent = 'Quiz complete 🎉';
-      if (qa) qa.innerHTML = '';
-      if (qs) qs.textContent = 'Score: ' + score + '/' + questions.length + ' — keep learning!';
-      const badgeStat = document.getElementById('badgeStat');
-      if (badgeStat && score >= 3) {
-        const n = parseInt(badgeStat.textContent, 10) || 3;
-        badgeStat.textContent = String(Math.min(n + 1, 10));
-      }
-      return;
-    }
-    const x = questions[qi];
-    if (qq) qq.textContent = x.q;
-    if (qs) qs.textContent = 'Question ' + (qi + 1) + ' of ' + questions.length;
-    if (qa) {
-      qa.innerHTML = x.a.map((a, i) => `<button class="quiz-answer" data-i="${i}">${a}</button>`).join('');
-      qa.querySelectorAll('button').forEach(b => b.onclick = () => {
-        if (+b.dataset.i === x.c) score++;
-        qi++;
-        quiz();
-      });
-    }
-  }
-  document.getElementById('openQuiz')?.addEventListener('click', () => {
-    qi = 0; score = 0;
-    if (modal) modal.hidden = false;
-    quiz();
-  });
-  document.getElementById('closeQuiz')?.addEventListener('click', () => { if (modal) modal.hidden = true; });
-  modal?.addEventListener('click', e => { if (e.target === modal) modal.hidden = true; });
-
   /* —— Checklist persistence —— */
   document.querySelectorAll('.exam-panel label input[type=checkbox]').forEach((cb, i) => {
     const key = 'hshs-hub-check-' + i;
@@ -270,5 +230,5 @@
     cb.addEventListener('change', () => localStorage.setItem(key, cb.checked ? '1' : '0'));
   });
 
-  console.log('%cHSHS Academic Hub active', 'color:#635bff;font-weight:bold');
+  console.log('%cHSHS Academic Hub ready — open access', 'color:#635bff;font-weight:bold');
 })();
