@@ -20,6 +20,7 @@
 </script>
 <style>
 .study-panel,.lab-modal{position:fixed;inset:0;background:#020617aa;backdrop-filter:blur(8px);z-index:50;display:grid;place-items:center;padding:20px}
+.study-panel[hidden],.lab-modal[hidden]{display:none!important}
 .study-box,.lab-box{width:min(560px,100%);background:var(--ah-card);border:1px solid var(--ah-border);border-radius:22px;padding:28px;position:relative;max-height:90vh;overflow:auto}
 .study-box .close,.lab-box .close{position:absolute;right:14px;top:10px;border:0;background:none;color:var(--ah-text);font-size:28px;cursor:pointer}
 .study-form{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
@@ -35,6 +36,9 @@
 .lab-mix button{border:0;background:var(--ah-primary);color:#fff;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer}
 .lab-circuit label{display:flex;align-items:center;gap:6px;padding:8px 12px;border:1px solid var(--ah-border);border-radius:10px;font-size:13px}
 .lab-fact{margin-top:14px;padding:14px;background:var(--ah-bg);border-radius:12px;font-size:14px;line-height:1.5;border:1px solid var(--ah-border)}
+.feature-grid{grid-template-columns:repeat(3,1fr)!important}
+@media(max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:600px){.feature-grid{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -67,7 +71,6 @@
  <div class="section-head"><div><span class="eyebrow">LEARNING HUB</span><h2>Everything you need to master a topic.</h2></div><div class="hub-search"><input id="hubSearch" placeholder="Search topics, notes, resources…"><span>⌕</span></div></div>
  <div class="feature-grid">
   <article class="feature-card featured-card"><span>🧠</span><h3>Smart Study Assistant</h3><p>Choose a subject and get a safe study prompt, explanation plan or practice session.</p><div class="quick-prompts"><button data-prompt="Explain a topic">Explain a topic</button><button data-prompt="Practice me">Practice me</button><button data-prompt="Revision mode">Revision mode</button></div></article>
-  <article class="feature-card"><span>📝</span><h3>Quiz Centre</h3><p>Test yourself with quick questions and track your score.</p><button class="text-btn" id="openQuiz">Start a quiz →</button></article>
   <article class="feature-card"><span>🧪</span><h3>Virtual Laboratory</h3><p>Explore Biology, Chemistry and Physics simulations safely.</p><div class="pill-row"><button data-lab="Biology">Biology</button><button data-lab="Chemistry">Chemistry</button><button data-lab="Physics">Physics</button></div></article>
   <article class="feature-card"><span>💻</span><h3>ICT & Coding Academy</h3><p>Build digital skills through web development and coding challenges.</p><a class="text-btn" href="#coding">Open Coding Academy →</a></article>
  </div>
@@ -81,7 +84,7 @@
  <div class="section-head"><div><span class="eyebrow">EXAMINATION CENTRE</span><h2>Prepare. Practice. Perform.</h2></div><div class="countdown" id="examCountdown">Loading countdown…</div></div>
  <div class="exam-grid">
   <div class="exam-panel"><h3>📅 Examination Planner</h3><form id="examAdd"><input id="examName" required placeholder="Exam / subject"><input id="examDate" required type="date"><button>Add</button></form><div id="examItems"></div></div>
-  <div class="exam-panel"><h3>📋 Revision Checklist</h3><label><input type="checkbox"> Review class notes</label><label><input type="checkbox"> Attempt past papers</label><label><input type="checkbox"> Mark difficult topics</label><label><input type="checkbox"> Take a timed quiz</label><label><input type="checkbox"> Review mistakes</label></div>
+  <div class="exam-panel"><h3>📋 Revision Checklist</h3><label><input type="checkbox"> Review class notes</label><label><input type="checkbox"> Attempt past papers</label><label><input type="checkbox"> Mark difficult topics</label><label><input type="checkbox"> Review mistakes</label><label><input type="checkbox"> Plan next study session</label></div>
   <div class="exam-panel"><h3>🎓 Results & Performance</h3><div class="mini-bars"><span style="--v:82%">Biology <i></i></span><span style="--v:76%">Mathematics <i></i></span><span style="--v:88%">ICT <i></i></span><span style="--v:71%">Chemistry <i></i></span></div><p class="muted">Demo analytics — connect to your school's results system later.</p></div>
  </div>
 </div></section>
@@ -108,12 +111,12 @@
 
 <section class="ah-section alt" id="analytics"><div class="ah-container">
  <span class="eyebrow">ACADEMIC ANALYTICS</span><h2>See your learning journey.</h2>
- <div class="analytics-grid"><div class="chart"><h3>Subject Progress</h3><div class="chart-bars"><span style="--h:82%">BIO</span><span style="--h:76%">MATH</span><span style="--h:88%">ICT</span><span style="--h:71%">CHEM</span><span style="--h:80%">ENG</span></div></div><div class="insight"><h3>✨ Your learning insights</h3><p>Keep practising consistently. Use past papers to identify topics that need more attention.</p><div class="insight-line">Weekly study target <b>4 / 6 sessions</b></div><div class="insight-line">Resources explored <b>18</b></div><div class="insight-line">Quiz accuracy <b>84%</b></div></div></div>
+ <div class="analytics-grid"><div class="chart"><h3>Subject Progress</h3><div class="chart-bars"><span style="--h:82%">BIO</span><span style="--h:76%">MATH</span><span style="--h:88%">ICT</span><span style="--h:71%">CHEM</span><span style="--h:80%">ENG</span></div></div><div class="insight"><h3>✨ Your learning insights</h3><p>Keep practising consistently. Use past papers to identify topics that need more attention.</p><div class="insight-line">Weekly study target <b>4 / 6 sessions</b></div><div class="insight-line">Resources explored <b>18</b></div><div class="insight-line">Topics revised <b>12</b></div></div></div>
 </div></section>
 
 <section class="ah-section" id="achievements"><div class="ah-container">
  <span class="eyebrow">HALL OF ACHIEVEMENT</span><h2>Celebrate academic growth.</h2>
- <div class="badges"><div>🏆<b>Quiz Master</b><small>5 quizzes completed</small></div><div>🔬<b>Young Scientist</b><small>Science learning streak</small></div><div>💻<b>Coding Explorer</b><small>First web project</small></div><div class="locked">🔒<b>Revision Champion</b><small>Complete 10 sessions</small></div></div>
+ <div class="badges"><div>🏆<b>Study Streak</b><small>Consistent weekly practice</small></div><div>🔬<b>Young Scientist</b><small>Science learning streak</small></div><div>💻<b>Coding Explorer</b><small>First web project</small></div><div class="locked">🔒<b>Revision Champion</b><small>Complete 10 sessions</small></div></div>
 </div></section>
 
 <section class="ah-section alt"><div class="ah-container">
@@ -122,7 +125,7 @@
 </div></section>
 </main>
 
-<!-- Study Assistant panel -->
+<!-- Study Assistant panel (hidden until opened) -->
 <div class="study-panel" id="studyPanel" hidden>
   <div class="study-box">
     <button class="close" id="closeStudy" aria-label="Close">×</button>
@@ -140,7 +143,7 @@
   </div>
 </div>
 
-<!-- Virtual Lab modal -->
+<!-- Virtual Lab modal (hidden until opened) -->
 <div class="lab-modal" id="labModal" hidden>
   <div class="lab-box">
     <button class="close" id="closeLab" aria-label="Close">×</button>
@@ -150,7 +153,6 @@
   </div>
 </div>
 
-<div class="quiz-modal" id="quizModal" hidden><div class="quiz-box"><button class="close" id="closeQuiz">×</button><span class="eyebrow">QUICK QUIZ</span><h2 id="quizQuestion"></h2><div id="quizAnswers"></div><p id="quizScore"></p></div></div>
 <footer class="ah-footer"><div class="ah-container"><b>HSHS ACADEMICS DOOR</b><span>Educate · Engage · Empower</span><a href="index.html">Return to the existing website →</a></div></footer>
 <script src="js/academic-hub.js"></script>
 <script src="js/premium-ui.js"></script>
