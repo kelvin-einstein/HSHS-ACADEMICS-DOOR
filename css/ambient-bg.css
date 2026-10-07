@@ -1,0 +1,305 @@
+/* ============================================================
+   HSHS Academics Door — Global ambient backgrounds & colors
+   Applied on every page for a cohesive, cinematic look
+   ============================================================ */
+
+/* —— Core color tokens (light) —— */
+:root {
+  --amb-1: oklch(0.58 0.22 265);
+  --amb-2: oklch(0.72 0.16 195);
+  --amb-3: oklch(0.65 0.2 310);
+  --amb-4: oklch(0.7 0.15 160);
+  --page-bg: oklch(0.98 0.01 265);
+  --page-bg-deep: oklch(0.96 0.02 260);
+  --mesh-a: color-mix(in oklch, var(--primary, var(--amb-1)) 18%, transparent);
+  --mesh-b: color-mix(in oklch, var(--accent, var(--amb-2)) 14%, transparent);
+  --mesh-c: color-mix(in oklch, var(--accent-2, var(--amb-3)) 12%, transparent);
+  --orb-glow: color-mix(in oklch, var(--primary, var(--amb-1)) 28%, transparent);
+}
+
+[data-theme="dark"] {
+  --page-bg: oklch(0.12 0.03 275);
+  --page-bg-deep: oklch(0.09 0.025 280);
+  --mesh-a: color-mix(in oklch, var(--primary, var(--amb-1)) 22%, transparent);
+  --mesh-b: color-mix(in oklch, var(--accent, var(--amb-2)) 16%, transparent);
+  --mesh-c: color-mix(in oklch, var(--accent-2, var(--amb-3)) 14%, transparent);
+  --orb-glow: color-mix(in oklch, var(--primary, var(--amb-1)) 35%, transparent);
+}
+
+/* —— Animated page canvas —— */
+body {
+  background-color: var(--page-bg) !important;
+  background-image:
+    radial-gradient(ellipse 90% 60% at 10% -10%, var(--mesh-a), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 95% 15%, var(--mesh-b), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, var(--mesh-c), transparent 55%),
+    linear-gradient(180deg, var(--page-bg), var(--page-bg-deep)) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Soft moving aurora layer */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, var(--mesh-a), transparent 42%),
+    radial-gradient(circle at 80% 20%, var(--mesh-b), transparent 38%),
+    radial-gradient(circle at 60% 80%, var(--mesh-c), transparent 40%);
+  filter: blur(40px);
+  opacity: 0.85;
+  animation: hshsAurora 22s ease-in-out infinite alternate;
+}
+
+@keyframes hshsAurora {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.7; }
+  33%  { transform: translate(3%, -2%) scale(1.05) rotate(1deg); opacity: 0.9; }
+  66%  { transform: translate(-2%, 3%) scale(1.02) rotate(-1deg); opacity: 0.75; }
+  100% { transform: translate(1%, -1%) scale(1.04) rotate(0.5deg); opacity: 0.85; }
+}
+
+/* Fine noise / grid shimmer */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image:
+    linear-gradient(color-mix(in oklch, var(--primary, #6366f1) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklch, var(--primary, #6366f1) 40%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: hshsGridDrift 40s linear infinite;
+}
+
+@keyframes hshsGridDrift {
+  from { background-position: 0 0; }
+  to   { background-position: 48px 48px; }
+}
+
+[data-theme="dark"] body::after {
+  opacity: 0.06;
+}
+
+/* Keep content above ambient layers */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* —— Floating orbs (inject via class on main wrappers) —— */
+.hshs-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hshs-orbs span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0.35;
+  animation: hshsOrbFloat 16s ease-in-out infinite;
+}
+.hshs-orbs span:nth-child(1) {
+  width: 180px; height: 180px;
+  left: 8%; top: 18%;
+  background: radial-gradient(circle, var(--orb-glow), transparent 70%);
+  animation-duration: 18s;
+}
+.hshs-orbs span:nth-child(2) {
+  width: 120px; height: 120px;
+  right: 12%; top: 35%;
+  background: radial-gradient(circle, color-mix(in oklch, var(--accent, #22d3ee) 40%, transparent), transparent 70%);
+  animation-duration: 14s;
+  animation-delay: -4s;
+}
+.hshs-orbs span:nth-child(3) {
+  width: 220px; height: 220px;
+  left: 40%; bottom: 10%;
+  background: radial-gradient(circle, color-mix(in oklch, var(--accent-2, #c084fc) 30%, transparent), transparent 70%);
+  animation-duration: 20s;
+  animation-delay: -8s;
+}
+.hshs-orbs span:nth-child(4) {
+  width: 90px; height: 90px;
+  right: 25%; bottom: 28%;
+  background: radial-gradient(circle, color-mix(in oklch, var(--amb-4) 35%, transparent), transparent 70%);
+  animation-duration: 12s;
+  animation-delay: -2s;
+}
+
+@keyframes hshsOrbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(12px, -18px) scale(1.05); }
+  50% { transform: translate(-8px, 10px) scale(0.96); }
+  75% { transform: translate(6px, 14px) scale(1.03); }
+}
+
+/* —— Section / card glass lift —— */
+.section,
+.ah-section,
+.planner-section,
+.quick-access,
+.featured,
+.notes-section,
+.subjects,
+.learn-hero,
+.chat-page,
+.chat-sidebar,
+.chat-main {
+  position: relative;
+}
+
+.card,
+.paper-card,
+.subject-card,
+.planner-card,
+.feature-card,
+.exam-panel,
+.resource,
+.ah-container .stats div,
+.course-card,
+.progress-card,
+.live-card,
+.chart-card,
+.comment-form-card,
+.comment-item {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* —— Header glass —— */
+.header,
+.ah-header {
+  background: color-mix(in oklch, var(--page-bg) 72%, transparent) !important;
+  backdrop-filter: blur(20px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.2) !important;
+  border-bottom-color: color-mix(in oklch, var(--primary, #6366f1) 12%, transparent) !important;
+}
+
+/* —— Footer soft blend —— */
+.footer,
+.ah-footer {
+  background: color-mix(in oklch, var(--page-bg-deep) 90%, transparent) !important;
+  border-top: 1px solid color-mix(in oklch, var(--primary, #6366f1) 10%, transparent);
+}
+
+/* —— Hero (home) richer overlay motion —— */
+.hero-overlay {
+  background: linear-gradient(
+    145deg,
+    oklch(0.16 0.12 275 / 0.9) 0%,
+    oklch(0.26 0.14 265 / 0.82) 35%,
+    oklch(0.32 0.12 220 / 0.78) 70%,
+    oklch(0.28 0.1 195 / 0.8) 100%
+  ) !important;
+  animation: hshsHeroWash 12s ease-in-out infinite alternate;
+}
+[data-theme="dark"] .hero-overlay {
+  background: linear-gradient(
+    145deg,
+    oklch(0.06 0.08 280 / 0.94) 0%,
+    oklch(0.12 0.1 270 / 0.9) 40%,
+    oklch(0.16 0.1 230 / 0.88) 100%
+  ) !important;
+}
+@keyframes hshsHeroWash {
+  from { filter: hue-rotate(0deg) brightness(1); }
+  to   { filter: hue-rotate(12deg) brightness(1.05); }
+}
+
+/* —— Academic Hub page palette boost —— */
+body:has(.ah-header) {
+  --ah-bg: transparent;
+}
+[data-theme="dark"] body:has(.ah-header) {
+  --ah-bg: transparent;
+}
+.ah-hero {
+  background:
+    radial-gradient(circle at 80% 30%, color-mix(in oklch, var(--ah-primary, #635bff) 28%, transparent), transparent 35%),
+    radial-gradient(circle at 15% 20%, color-mix(in oklch, var(--ah-accent, #00b8a9) 22%, transparent), transparent 32%),
+    radial-gradient(circle at 50% 90%, color-mix(in oklch, #c084fc 12%, transparent), transparent 40%) !important;
+  animation: hshsHubHero 16s ease-in-out infinite alternate;
+}
+@keyframes hshsHubHero {
+  from { filter: brightness(1); }
+  to   { filter: brightness(1.06) saturate(1.08); }
+}
+
+.ah-section.alt {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in oklch, var(--ah-primary, #635bff) 6%, transparent),
+    color-mix(in oklch, var(--ah-accent, #00b8a9) 4%, transparent),
+    transparent
+  ) !important;
+}
+
+/* —— Learn page hero —— */
+.learn-hero {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 0%, color-mix(in oklch, var(--primary) 20%, transparent), transparent),
+    radial-gradient(ellipse 60% 50% at 90% 30%, color-mix(in oklch, var(--accent, #22d3ee) 15%, transparent), transparent),
+    linear-gradient(180deg, color-mix(in oklch, var(--primary) 4%, transparent), transparent) !important;
+  position: relative;
+  overflow: hidden;
+}
+.learn-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 80%, color-mix(in oklch, var(--accent-2, #c084fc) 12%, transparent), transparent 45%);
+  animation: hshsAurora 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+/* —— Chat page ambient —— */
+.chat-page,
+.chat-gate {
+  background: transparent !important;
+}
+.chat-sidebar {
+  background: color-mix(in oklch, var(--bg-card, #fff) 88%, transparent) !important;
+  backdrop-filter: blur(16px);
+}
+[data-theme="dark"] .chat-sidebar {
+  background: color-mix(in oklch, var(--bg-card, #111827) 88%, transparent) !important;
+}
+.chat-main {
+  background:
+    radial-gradient(ellipse at 30% 20%, color-mix(in oklch, var(--primary) 8%, transparent), transparent 50%),
+    radial-gradient(ellipse at 80% 70%, color-mix(in oklch, var(--accent, #22d3ee) 6%, transparent), transparent 45%) !important;
+}
+
+/* —— Smooth accent color transitions —— */
+html {
+  transition:
+    --primary 0.5s ease,
+    --accent 0.5s ease,
+    --accent-2 0.5s ease,
+    --mesh-a 0.5s ease,
+    --mesh-b 0.5s ease,
+    --mesh-c 0.5s ease;
+}
+
+/* —— Reduced motion —— */
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  .hshs-orbs span,
+  .hero-overlay,
+  .ah-hero,
+  .learn-hero::before {
+    animation: none !important;
+  }
+  body::before { opacity: 0.5; filter: blur(30px); }
+}
