@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="css/advanced.css"/>
 <link rel="stylesheet" href="css/enhancements.css"/>
 <link rel="stylesheet" href="css/premium-ui.css?v=20261005"/>
+<link rel="stylesheet" href="css/professional.css?v=20261024"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script>(function(){const t=localStorage.getItem('hshs-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);const a=localStorage.getItem('hshs-accent')||'indigo';document.documentElement.setAttribute('data-accent',a);})();</script>
 <link rel="stylesheet" href="css/ambient-bg.css?v=20261007" />
@@ -39,13 +40,32 @@
 <section class="learn-hero"><div class="container">
 <p class="school-badge">Digital Classroom</p>
 <h1>Online Learning</h1>
-<p>Courses, live classes, quizzes, community stats, and comments — everything in one place.</p>
+<p>Courses, live classes, quizzes, community stats, and comments — everything in one place for HSHS students.</p>
 <div class="learn-hero-actions">
 <a href="#courses" class="btn btn-primary">Browse Courses</a>
 <a href="#community" class="btn btn-outline">Community</a>
 <a href="#camera" class="btn btn-outline">Open Camera</a>
 </div>
 </div></section>
+
+<div class="trust-bar" role="region" aria-label="Learning platform signals">
+  <span class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+    Structured courses
+  </span>
+  <span class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Quizzes & assignments
+  </span>
+  <span class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    Live class ready
+  </span>
+  <span class="trust-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Private to your device
+  </span>
+</div>
 
 <section class="section"><div class="container">
 <h2 class="section-title">Everything for Online Learning</h2>
@@ -80,7 +100,7 @@
 <section class="section learn-camera-section" id="camera" aria-labelledby="camera-title">
 <div class="container">
 <h2 class="section-title" id="camera-title">Class Camera</h2>
-<p style="margin-block-end:1.25rem;color:var(--text-muted)">Practice presentations or join a visual check-in. Your video stays on this device only.</p>
+<p class="section-lead" style="text-align:left;margin-inline:0">Practice presentations or join a visual check-in. Your video stays on this device only.</p>
 <div class="camera-panel reveal">
 <div class="camera-video-wrap">
 <video id="learnCamera" playsinline muted></video>
@@ -157,8 +177,20 @@
 
 </main>
 <footer class="footer"><div class="container footer-inner">
-<div class="footer-brand"><strong>Hawthorne-Scribner High School</strong><p class="footer-motto">Educate · Engage · Empower</p></div>
-</div><div class="footer-bottom"><div class="container"><p>&copy; 2026 Hawthorne-Scribner High School · Academics Door</p></div></div></footer>
+<div class="footer-brand">
+<img class="logo-badge footer-badge" src="https://hawthorne-scribner.ac.ug/wp-content/uploads/2024/12/Hawthorne-Scribner-Badge-png-768x771.png" alt="" width="48" height="48" />
+<strong>Hawthorne-Scribner High School</strong>
+<p class="footer-motto">Educate · Engage · Empower</p>
+<p>Official learning hub for HSHS students.</p>
+</div>
+<div class="footer-links">
+<div><h4>Learn</h4><a href="#courses">Courses</a><a href="#live">Live Classes</a><a href="#camera">Class Camera</a></div>
+<div><h4>Community</h4><a href="#community">Stats</a><a href="#comments">Comments</a><a href="chat.html">Chat</a></div>
+<div><h4>School</h4><a href="https://hawthorne-scribner.ac.ug/" target="_blank" rel="noopener">Official website</a><a href="mailto:info@hshs.ac.ug">Contact</a></div>
+</div>
+</div><div class="footer-bottom"><div class="container"><p>&copy; 2026 Hawthorne-Scribner High School · Academics Door</p>
+<div class="footer-accreditation"><span>MoES Reg. PSS/H/154</span><span>·</span><span>UNEB Center U4870</span></div>
+</div></div></footer>
 <script src="js/app.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/profile.js"></script>
