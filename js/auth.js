@@ -1,15 +1,32 @@
 /**
  * HSHS Academics Door — Authentication
- * Professional Login / Sign Up modal with localStorage session.
- * Designed so it can later be swapped for Firebase / Supabase with minimal changes.
+ * Restricted to HSHS students only via Access Code system.
  */
+
 (function () {
   "use strict";
 
   const USERS_KEY = "hshs-users";
   const SESSION_KEY = "hshs-session";
 
+  // ====================== ACCESS CODES ======================
+  // Add or remove codes here. Make them class-based or term-based.
+  // You can later move this to localStorage or a backend.
+  const VALID_ACCESS_CODES = [
+    "HSHS-2026",
+    "HSHS-S1",
+    "HSHS-S2",
+    "HSHS-S3",
+    "HSHS-S4",
+    "HSHS-S5",
+    "HSHS-S6",
+    "HSHS-TEACHER",   // optional for teachers
+    "HSHS-ADMIN"      // optional for admins
+  ];
+  // ==========================================================
+
   const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel) => [...document.querySelectorAll(sel)];
 
   // ---------- Storage ----------
   function getUsers() {
@@ -55,7 +72,6 @@
 
   function hashPassword(pw) {
     // Simple non-cryptographic hash for demo only.
-    // Replace with real backend / Firebase in production.
     let h = 0;
     for (let i = 0; i < pw.length; i++) {
       h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0;
@@ -65,6 +81,12 @@
 
   function validateEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function isValidAccessCode(code) {
+    if (!code) return false;
+    const normalized = code.trim().toUpperCase();
+    return VALID_ACCESS_CODES.some(c => c.toUpperCase() === normalized);
   }
 
   function showToast(message, type = "success") {
@@ -110,6 +132,7 @@
         transform: translateY(12px) scale(0.98);
         transition: transform 0.25s ease;
         border: 1px solid var(--border, oklch(0.9 0 0));
+        position: relative;
       }
       #hshs-auth-overlay.open .hshs-auth-card { transform: none; }
       [data-theme="dark"] .hshs-auth-card {
@@ -177,12 +200,10 @@
         align-items: center; justify-content: center;
       }
       .hshs-auth-close:hover { background: oklch(0 0 0 / 0.06); }
-      .hshs-auth-card { position: relative; }
       .hshs-auth-note {
         text-align: center; font-size: 0.78rem; color: var(--text-muted, #64748b);
         margin-top: 1rem; line-height: 1.4;
       }
-      /* User chip in header */
       .hshs-user-chip {
         display: inline-flex; align-items: center; gap: 0.5rem;
         padding: 0.3rem 0.55rem 0.3rem 0.3rem; border-radius: 999px;
@@ -207,7 +228,6 @@
         border-radius: 6px; line-height: 1;
       }
       .hshs-logout-btn:hover { color: oklch(0.55 0.2 25); }
-      /* Toasts */
       #hshs-toast-container {
         position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 10000;
         display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;
@@ -264,14 +284,19 @@
             <label for="hshsAuthPassword">Password</label>
             <input type="password" id="hshsAuthPassword" name="password" placeholder="At least 6 characters" autocomplete="current-password" required minlength="6" />
           </div>
+          <div class="hshs-auth-field" id="hshsCodeField" hidden>
+            <label for="hshsAuthCode">Access Code <span style="color:#ef4444">*</span></label>
+            <input type="text" id="hshsAuthCode" name="code" placeholder="Enter code from your teacher" autocomplete="off" />
+          </div>
           <button type="submit" class="hshs-auth-submit" id="hshsAuthSubmit">Login</button>
         </form>
-        <p class="hshs-auth-note">Demo accounts are stored only on this device.<br/>You can later connect real Firebase Authentication.</p>
+        <p class="hshs-auth-note" id="hshsAuthNote">
+          This platform is strictly for Hawthorne-Scribner High School students.
+        </p>
       </div>
     `;
     document.body.appendChild(overlay);
 
-    // Events
     $("#hshsAuthClose").addEventListener("click", closeModal);
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeModal();
@@ -292,20 +317,30 @@
   function setMode(mode) {
     currentMode = mode;
     const isSignup = mode === "signup";
+    
     $$(".hshs-auth-tab").forEach((t) => t.classList.toggle("active", t.dataset.mode === mode));
+    
     const nameField = $("#hshsNameField");
+    const codeField = $("#hshsCodeField");
+    
     if (nameField) nameField.hidden = !isSignup;
+    if (codeField) codeField.hidden = !isSignup;
+
     $("#hshs-auth-title").textContent = isSignup ? "Create account" : "Welcome back";
     $("#hshs-auth-subtitle").textContent = isSignup
       ? "Join the HSHS Academics Door community"
       : "Sign in to access your study tools";
     $("#hshsAuthSubmit").textContent = isSignup ? "Create account" : "Login";
     $("#hshsAuthPassword").autocomplete = isSignup ? "new-password" : "current-password";
+    
+    const note = $("#hshsAuthNote");
+    if (note) {
+      note.innerHTML = isSignup
+        ? `This platform is <strong>strictly for HSHS students</strong>.<br>Get the Access Code from your class teacher.`
+        : `This platform is strictly for Hawthorne-Scribner High School students.`;
+    }
+    
     clearError();
-  }
-
-  function $$(sel) {
-    return [...document.querySelectorAll(sel)];
   }
 
   function openModal(mode = "login") {
@@ -346,9 +381,11 @@
   function onSubmit(e) {
     e.preventDefault();
     clearError();
+    
     const name = $("#hshsAuthName")?.value.trim() || "";
     const email = $("#hshsAuthEmail")?.value.trim().toLowerCase() || "";
     const password = $("#hshsAuthPassword")?.value || "";
+    const accessCode = $("#hshsAuthCode")?.value.trim() || "";
 
     if (!validateEmail(email)) {
       showError("Please enter a valid email address.");
@@ -366,15 +403,25 @@
         showError("Please enter your full name.");
         return;
       }
+
+      // ===== ACCESS CODE CHECK =====
+      if (!isValidAccessCode(accessCode)) {
+        showError("Invalid or missing Access Code. Please get the correct code from your class teacher.");
+        return;
+      }
+      // =============================
+
       if (users.some((u) => u.email === email)) {
         showError("An account with this email already exists. Try logging in.");
         return;
       }
+
       const user = {
         id: "u" + Date.now(),
         name,
         email,
         passwordHash: hashPassword(password),
+        accessCode: accessCode.toUpperCase(),
         createdAt: new Date().toISOString(),
       };
       users.push(user);
@@ -411,7 +458,6 @@
     const loginBtn = $("#loginBtn");
     const signupBtn = $("#signupBtn");
 
-    // Remove existing chip if any
     $(".hshs-user-chip")?.remove();
 
     if (session) {
@@ -429,7 +475,6 @@
           <span class="chip-name">${escapeHtml(session.name)}</span>
           <button type="button" class="hshs-logout-btn" id="hshsLogoutBtn" title="Log out" aria-label="Log out">⎋</button>
         `;
-        // Insert before mobile menu button if present
         const mobileBtn = $("#mobileMenuBtn");
         if (mobileBtn) {
           actions.insertBefore(chip, mobileBtn);
