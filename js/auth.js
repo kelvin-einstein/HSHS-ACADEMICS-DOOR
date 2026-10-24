@@ -1,6 +1,13 @@
 /**
  * HSHS Academics Door — Authentication
- * Restricted to HSHS students only via Access Code system.
+ * Restricted to HSHS students only via Access Code + Email Verification.
+ *
+ * Flow:
+ * 1. Sign up with Access Code
+ * 2. Account is created as unverified
+ * 3. Verification link is generated
+ * 4. User must open the link to activate the account
+ * 5. Login is blocked until email is verified
  */
 
 (function () {
@@ -10,8 +17,6 @@
   const SESSION_KEY = "hshs-session";
 
   // ====================== ACCESS CODES ======================
-  // Add or remove codes here. Make them class-based or term-based.
-  // You can later move this to localStorage or a backend.
   const VALID_ACCESS_CODES = [
     "HSHS-2026",
     "HSHS-S1",
@@ -20,8 +25,8 @@
     "HSHS-S4",
     "HSHS-S5",
     "HSHS-S6",
-    "HSHS-TEACHER",   // optional for teachers
-    "HSHS-ADMIN"      // optional for admins
+    "HSHS-TEACHER",
+    "HSHS-ADMIN"
   ];
   // ==========================================================
 
@@ -58,6 +63,7 @@
       id: user.id,
       name: user.name,
       email: user.email,
+      verified: !!user.verified,
       createdAt: user.createdAt,
     };
     localStorage.setItem(SESSION_KEY, JSON.stringify(safe));
@@ -71,7 +77,6 @@
   }
 
   function hashPassword(pw) {
-    // Simple non-cryptographic hash for demo only.
     let h = 0;
     for (let i = 0; i < pw.length; i++) {
       h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0;
@@ -89,6 +94,10 @@
     return VALID_ACCESS_CODES.some(c => c.toUpperCase() === normalized);
   }
 
+  function generateToken() {
+    return "v_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 12);
+  }
+
   function showToast(message, type = "success") {
     let container = $("#hshs-toast-container");
     if (!container) {
@@ -104,7 +113,7 @@
     setTimeout(() => {
       toast.classList.remove("show");
       setTimeout(() => toast.remove(), 300);
-    }, 2800);
+    }, 3200);
   }
 
   // ---------- Modal HTML + CSS ----------
@@ -237,12 +246,18 @@
         border-radius: 12px; font-size: 0.9rem; font-weight: 500;
         box-shadow: 0 10px 25px oklch(0 0 0 / 0.25);
         opacity: 0; transform: translateY(12px); transition: 0.3s ease;
-        max-width: 320px;
+        max-width: 340px;
       }
       .hshs-toast.show { opacity: 1; transform: none; }
       .hshs-toast--success { background: oklch(0.45 0.14 145); }
       .hshs-toast--error { background: oklch(0.5 0.18 25); }
       .hshs-toast--info { background: oklch(0.45 0.14 250); }
+      .hshs-verify-banner {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 10001;
+        background: oklch(0.45 0.14 145); color: #fff;
+        padding: 0.85rem 1.25rem; text-align: center; font-weight: 600;
+        font-size: 0.95rem; box-shadow: 0 4px 12px oklch(0 0 0 / 0.2);
+      }
       @media (max-width: 480px) {
         .hshs-user-chip .chip-name { display: none; }
         .hshs-user-chip { padding: 0.25rem; }
@@ -317,12 +332,12 @@
   function setMode(mode) {
     currentMode = mode;
     const isSignup = mode === "signup";
-    
+
     $$(".hshs-auth-tab").forEach((t) => t.classList.toggle("active", t.dataset.mode === mode));
-    
+
     const nameField = $("#hshsNameField");
     const codeField = $("#hshsCodeField");
-    
+
     if (nameField) nameField.hidden = !isSignup;
     if (codeField) codeField.hidden = !isSignup;
 
@@ -332,14 +347,14 @@
       : "Sign in to access your study tools";
     $("#hshsAuthSubmit").textContent = isSignup ? "Create account" : "Login";
     $("#hshsAuthPassword").autocomplete = isSignup ? "new-password" : "current-password";
-    
+
     const note = $("#hshsAuthNote");
     if (note) {
       note.innerHTML = isSignup
-        ? `This platform is <strong>strictly for HSHS students</strong>.<br>Get the Access Code from your class teacher.`
+        ? `This platform is <strong>strictly for HSHS students</strong>.<br>Get the Access Code from your class teacher.<br>You will need to verify your email after signing up.`
         : `This platform is strictly for Hawthorne-Scribner High School students.`;
     }
-    
+
     clearError();
   }
 
@@ -378,10 +393,55 @@
     el.classList.remove("show");
   }
 
+  // ---------- Email Verification ----------
+  function createVerificationLink(token) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("verify", token);
+    return url.toString();
+  }
+
+  function handleVerificationFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("verify");
+    if (!token) return;
+
+    const users = getUsers();
+    const user = users.find(u => u.verifyToken === token);
+
+    if (!user) {
+      showToast("Invalid or expired verification link.", "error");
+      // Clean URL
+      const clean = window.location.pathname + window.location.hash;
+      window.history.replaceState({}, "", clean);
+      return;
+    }
+
+    if (user.verified) {
+      showToast("This email is already verified. You can log in.", "info");
+    } else {
+      user.verified = true;
+      user.verifyToken = null;
+      user.verifiedAt = new Date().toISOString();
+      saveUsers(users);
+      showToast("Email verified successfully! You can now log in.", "success");
+
+      // Optional: show a temporary banner
+      const banner = document.createElement("div");
+      banner.className = "hshs-verify-banner";
+      banner.textContent = "✓ Email verified successfully! You can now log in.";
+      document.body.prepend(banner);
+      setTimeout(() => banner.remove(), 5000);
+    }
+
+    // Clean the URL so the token is not left in the address bar
+    const clean = window.location.pathname + window.location.hash;
+    window.history.replaceState({}, "", clean);
+  }
+
   function onSubmit(e) {
     e.preventDefault();
     clearError();
-    
+
     const name = $("#hshsAuthName")?.value.trim() || "";
     const email = $("#hshsAuthEmail")?.value.trim().toLowerCase() || "";
     const password = $("#hshsAuthPassword")?.value || "";
@@ -404,39 +464,60 @@
         return;
       }
 
-      // ===== ACCESS CODE CHECK =====
       if (!isValidAccessCode(accessCode)) {
         showError("Invalid or missing Access Code. Please get the correct code from your class teacher.");
         return;
       }
-      // =============================
 
       if (users.some((u) => u.email === email)) {
         showError("An account with this email already exists. Try logging in.");
         return;
       }
 
+      const token = generateToken();
       const user = {
         id: "u" + Date.now(),
         name,
         email,
         passwordHash: hashPassword(password),
         accessCode: accessCode.toUpperCase(),
+        verified: false,
+        verifyToken: token,
         createdAt: new Date().toISOString(),
       };
+
       users.push(user);
       saveUsers(users);
-      setSession(user);
+
+      // Close modal and inform user
       closeModal();
-      updateHeader();
-      showToast("Account created — welcome, " + name.split(" ")[0] + "!", "success");
-      window.dispatchEvent(new CustomEvent("hshs:auth", { detail: { user, action: "signup" } }));
+
+      const verifyUrl = createVerificationLink(token);
+
+      // For development / testing: show the link in console and toast
+      console.log("%cHSHS Email Verification Link:", "color:#6366f1;font-weight:bold;");
+      console.log(verifyUrl);
+
+      showToast("Account created! Please verify your email. (Check the browser console for the verification link while testing)", "info");
+
+      // In a real system we would send an email here.
+      // Example with EmailJS later:
+      // emailjs.send("service_id", "template_id", { to_email: email, verify_link: verifyUrl });
+
+      window.dispatchEvent(new CustomEvent("hshs:auth", { detail: { user, action: "signup-pending" } }));
     } else {
+      // LOGIN
       const user = users.find((u) => u.email === email);
       if (!user || user.passwordHash !== hashPassword(password)) {
         showError("Incorrect email or password.");
         return;
       }
+
+      if (!user.verified) {
+        showError("Please verify your email first. Check your inbox (or the browser console while testing) for the verification link.");
+        return;
+      }
+
       setSession(user);
       closeModal();
       updateHeader();
@@ -515,6 +596,7 @@
     injectStyles();
     wireButtons();
     updateHeader();
+    handleVerificationFromUrl();
   }
 
   if (document.readyState === "loading") {
