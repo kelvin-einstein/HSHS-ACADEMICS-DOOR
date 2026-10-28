@@ -50,5 +50,63 @@
 .rec-row{display:flex;gap:1rem;overflow-x:auto;padding-block-end:.5rem;scroll-snap-type:x mandatory}.rec-card{flex:0 0 240px;scroll-snap-align:start;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;box-shadow:var(--shadow)}.rec-card h4{font-size:.95rem;margin-block-end:.3rem}.rec-card p{font-size:.8rem;color:var(--text-muted)}
 .search-results-panel{position:absolute;inset-inline:0;inset-block-start:calc(100% + 8px);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);max-block-size:360px;overflow-y:auto;z-index:50;text-align:start}.search-results-panel[hidden]{display:none!important}.search-box{position:relative}.sr-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-block-end:1px solid color-mix(in oklch,var(--border) 70%,transparent);cursor:pointer;color:var(--text)}.sr-item:hover{background:color-mix(in oklch,var(--primary) 8%,transparent)}.sr-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.15rem .45rem;border-radius:4px;background:color-mix(in oklch,var(--primary) 14%,transparent);color:var(--primary);flex-shrink:0}.sr-title{font-weight:600;font-size:.9rem}.sr-meta{font-size:.75rem;color:var(--text-muted)}
 .section-lead{color:var(--text-muted);margin-block-end:1.5rem;max-width:560px}
-.students-photo-section{padding-block:2.5rem 3rem}.students-photo-frame{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-lg);background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;min-height:200px}.students-photo-frame img{display:block;width:100%;height:auto;max-height:min(70vh,640px);object-fit:contain;object-position:center}.students-photo-caption{margin-block-start:.85rem;text-align:center;font-size:.9rem;color:var(--text-muted)}.students-photo-placeholder{padding:3rem 1.5rem;text-align:center;color:var(--text-muted);font-size:.95rem}.students-photo-placeholder code{font-size:.85rem;background:color-mix(in oklch,var(--primary) 10%,transparent);padding:.15rem .45rem;border-radius:6px;color:var(--primary)}
+
+/* ===== Students photo — full width ===== */
+.students-photo-section {
+  padding-block: 2.5rem 3rem;
+  padding-inline: 0 !important;
+}
+.students-photo-section .container {
+  max-width: 100%;
+  padding-inline: 0;
+}
+.students-photo-section .section-title,
+.students-photo-section .section-lead {
+  padding-inline: 1.25rem;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+.students-photo-frame {
+  position: relative;
+  border-radius: 0;
+  overflow: hidden;
+  border: none;
+  box-shadow: none;
+  background: var(--bg-elevated);
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0;
+  display: block;
+  min-height: 280px;
+}
+.students-photo-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  min-height: 280px;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.students-photo-caption {
+  margin-block-start: 0.85rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  padding-inline: 1.25rem;
+}
+.students-photo-placeholder {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+.students-photo-placeholder code {
+  font-size: 0.85rem;
+  background: color-mix(in oklch, var(--primary) 10%, transparent);
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  color: var(--primary);
+}
+
 @media print{.header,.bottom-nav,.fab,.theme-toggle,.offline-banner,.cmd-overlay{display:none!important}}
