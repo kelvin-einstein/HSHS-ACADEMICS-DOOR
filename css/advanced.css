@@ -51,18 +51,18 @@
 .search-results-panel{position:absolute;inset-inline:0;inset-block-start:calc(100% + 8px);background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);max-block-size:360px;overflow-y:auto;z-index:50;text-align:start}.search-results-panel[hidden]{display:none!important}.search-box{position:relative}.sr-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border-block-end:1px solid color-mix(in oklch,var(--border) 70%,transparent);cursor:pointer;color:var(--text)}.sr-item:hover{background:color-mix(in oklch,var(--primary) 8%,transparent)}.sr-type{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.15rem .45rem;border-radius:4px;background:color-mix(in oklch,var(--primary) 14%,transparent);color:var(--primary);flex-shrink:0}.sr-title{font-weight:600;font-size:.9rem}.sr-meta{font-size:.75rem;color:var(--text-muted)}
 .section-lead{color:var(--text-muted);margin-block-end:1.5rem;max-width:560px}
 
-/* ===== Students photo — balanced size ===== */
+/* ===== Students photo — balanced website size ===== */
 .students-photo-section {
-  padding-block: 2.5rem 3rem;
+  padding-block: 2.75rem 3.25rem;
 }
 .students-photo-frame {
   position: relative;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 12px 40px oklch(0.2 0.04 265 / 0.1);
   background: var(--bg-elevated);
-  max-width: 900px;
+  max-width: 1040px;
   margin-inline: auto;
   display: block;
 }
@@ -70,12 +70,12 @@
   display: block;
   width: 100%;
   height: auto;
-  max-height: 420px;
+  max-height: 480px;
   object-fit: cover;
-  object-position: center 25%;
+  object-position: center 28%;
 }
 .students-photo-caption {
-  margin-block-start: 0.85rem;
+  margin-block-start: 0.9rem;
   text-align: center;
   font-size: 0.9rem;
   color: var(--text-muted);
