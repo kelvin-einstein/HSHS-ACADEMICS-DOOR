@@ -55,25 +55,25 @@
 }
 @keyframes heroBgKen {
   0% { transform: scale(1.02) translate(0, 0); }
-  100% { transform: scale(1.08) translate(-1%, -1%); }
+  100% { transform: scale(1.06) translate(-0.8%, -0.8%); }
 }
 .hero-overlay {
   position: absolute;
   inset: 0;
   z-index: 1;
   background: linear-gradient(
-    145deg,
-    oklch(0.18 0.1 275 / 0.88) 0%,
-    oklch(0.28 0.14 265 / 0.82) 40%,
-    oklch(0.35 0.12 230 / 0.78) 100%
+    160deg,
+    oklch(0.18 0.08 275 / 0.72) 0%,
+    oklch(0.25 0.1 265 / 0.65) 45%,
+    oklch(0.32 0.09 230 / 0.62) 100%
   );
 }
 [data-theme="dark"] .hero-overlay {
   background: linear-gradient(
-    145deg,
-    oklch(0.08 0.06 280 / 0.92) 0%,
-    oklch(0.14 0.1 270 / 0.88) 45%,
-    oklch(0.2 0.1 230 / 0.85) 100%
+    160deg,
+    oklch(0.08 0.05 280 / 0.82) 0%,
+    oklch(0.14 0.08 270 / 0.78) 45%,
+    oklch(0.18 0.08 230 / 0.75) 100%
   );
 }
 .hero-with-photo .hero-grid,
@@ -294,7 +294,7 @@
 .theme-toggle .icon-sun svg,
 .theme-toggle .icon-moon svg { display: block; }
 
-/* ---------- Our Students photo (full image visible — never cropped) ---------- */
+/* ---------- Our Students photo ---------- */
 .students-photo-section {
   padding-block: 2.5rem 3rem;
 }
