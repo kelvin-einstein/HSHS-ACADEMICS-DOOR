@@ -1,11 +1,13 @@
 /*
   Home page hero background
-  Using the new school photo uploaded by user
+  Using the new school photo — clearer & more professional
 */
 .hero-bg {
   background-image:
     url("../assets/hshs.png"),
     url("https://hawthorne-scribner.ac.ug/wp-content/uploads/2025/07/Classroom-4-12-31-2024-edited-scaled.jpg") !important;
   background-size: cover !important;
-  background-position: center !important;
+  background-position: center 30% !important;
+  background-repeat: no-repeat !important;
+  filter: brightness(1.05) contrast(1.08) saturate(1.05);
 }
