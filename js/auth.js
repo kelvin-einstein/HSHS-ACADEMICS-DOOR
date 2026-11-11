@@ -1,1 +1,344 @@
-SEE_FILE
+/**
+ * HSHS Academics Door — Authentication
+ * Restricted to HSHS students only via Access Code.
+ *
+ * Flow:
+ * 1. Sign up with Access Code
+ * 2. Account is created and ready to use
+ * 3. Login works immediately
+ */
+
+(function () {
+  "use strict";
+
+  const USERS_KEY = "hshs-users";
+  const SESSION_KEY = "hshs-session";
+
+  const VALID_ACCESS_CODES = [
+    "HSHS-2026", "HSHS-S1", "HSHS-S2", "HSHS-S3",
+    "HSHS-S4", "HSHS-S5", "HSHS-S6", "HSHS-TEACHER", "HSHS-ADMIN"
+  ];
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel) => [...document.querySelectorAll(sel)];
+
+  function getUsers() {
+    try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; } catch { return []; }
+  }
+  function saveUsers(users) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+  function getSession() {
+    try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch { return null; }
+  }
+  function setSession(user) {
+    if (!user) { localStorage.removeItem(SESSION_KEY); return; }
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      id: user.id, name: user.name, email: user.email,
+      verified: true, createdAt: user.createdAt
+    }));
+  }
+  function hashPassword(pw) {
+    let h = 0;
+    for (let i = 0; i < pw.length; i++) h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0;
+    return "h" + Math.abs(h).toString(16);
+  }
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+  function isValidAccessCode(code) {
+    if (!code) return false;
+    const n = code.trim().toUpperCase();
+    return VALID_ACCESS_CODES.some(c => c.toUpperCase() === n);
+  }
+  function showToast(message, type = "success") {
+    let container = $("#hshs-toast-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "hshs-toast-container";
+      document.body.appendChild(container);
+    }
+    const toast = document.createElement("div");
+    toast.className = "hshs-toast hshs-toast--" + type;
+    toast.textContent = message;
+    container.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add("show"));
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 300);
+    }, 3200);
+  }
+
+  function injectStyles() {
+    if ($("#hshs-auth-styles")) return;
+    const style = document.createElement("style");
+    style.id = "hshs-auth-styles";
+    style.textContent = `
+      #hshs-auth-overlay{position:fixed;inset:0;z-index:9999;background:oklch(0 0 0 / .55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+      #hshs-auth-overlay.open{opacity:1;visibility:visible}
+      .hshs-auth-card{width:min(420px,100%);background:var(--surface,#fff);color:var(--text,#0f172a);border-radius:20px;box-shadow:0 25px 50px -12px oklch(0 0 0 / .35);padding:1.75rem 1.6rem 1.5rem;transform:translateY(12px) scale(.98);transition:transform .25s;border:1px solid var(--border,oklch(.9 0 0));position:relative}
+      #hshs-auth-overlay.open .hshs-auth-card{transform:none}
+      [data-theme=dark] .hshs-auth-card{background:oklch(.22 .02 260);border-color:oklch(1 0 0 / .1)}
+      .hshs-auth-header{text-align:center;margin-bottom:1.35rem}
+      .hshs-auth-header h2{font-size:1.35rem;font-weight:700;margin:0 0 .35rem}
+      .hshs-auth-header p{margin:0;font-size:.9rem;color:var(--text-muted,#64748b)}
+      .hshs-auth-tabs{display:flex;gap:.4rem;background:oklch(.96 .01 260);padding:.3rem;border-radius:12px;margin-bottom:1.25rem}
+      [data-theme=dark] .hshs-auth-tabs{background:oklch(.28 .02 260)}
+      .hshs-auth-tab{flex:1;border:none;background:transparent;padding:.55rem;border-radius:9px;font-weight:600;font-size:.9rem;cursor:pointer;color:var(--text-muted,#64748b);transition:.2s}
+      .hshs-auth-tab.active{background:var(--primary,#6366f1);color:#fff;box-shadow:0 2px 8px oklch(.55 .2 270 / .35)}
+      .hshs-auth-field{margin-bottom:.95rem}
+      .hshs-auth-field label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.35rem;color:var(--text-muted,#64748b)}
+      .hshs-auth-field input{width:100%;padding:.7rem .85rem;border-radius:10px;border:1.5px solid var(--border,oklch(.88 0 0));background:var(--bg,#fff);color:inherit;font-size:.95rem;outline:none;box-sizing:border-box}
+      [data-theme=dark] .hshs-auth-field input{background:oklch(.18 .02 260);border-color:oklch(1 0 0 / .12)}
+      .hshs-auth-field input:focus{border-color:var(--primary,#6366f1);box-shadow:0 0 0 3px oklch(.55 .2 270 / .2)}
+      .hshs-auth-error{background:oklch(.95 .05 25);color:oklch(.45 .18 25);border-radius:10px;padding:.65rem .85rem;font-size:.85rem;margin-bottom:.9rem;display:none}
+      [data-theme=dark] .hshs-auth-error{background:oklch(.3 .06 25);color:oklch(.85 .08 25)}
+      .hshs-auth-error.show{display:block}
+      .hshs-auth-submit{width:100%;padding:.8rem;border:none;border-radius:12px;background:var(--primary,#6366f1);color:#fff;font-weight:700;font-size:.95rem;cursor:pointer;margin-top:.25rem}
+      .hshs-auth-submit:hover{filter:brightness(1.08)}
+      .hshs-auth-close{position:absolute;top:.9rem;right:.9rem;width:36px;height:36px;border:none;border-radius:10px;background:transparent;font-size:1.25rem;cursor:pointer;color:var(--text-muted,#64748b);display:flex;align-items:center;justify-content:center}
+      .hshs-auth-note{text-align:center;font-size:.78rem;color:var(--text-muted,#64748b);margin-top:1rem;line-height:1.4}
+      .hshs-user-chip{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .55rem .3rem .3rem;border-radius:999px;background:oklch(.96 .02 270);border:1px solid var(--border,oklch(.9 0 0));font-size:.85rem;font-weight:600;max-width:180px}
+      [data-theme=dark] .hshs-user-chip{background:oklch(.28 .03 270);border-color:oklch(1 0 0 / .12)}
+      .hshs-user-chip .chip-avatar{width:28px;height:28px;border-radius:50%;background:var(--primary,#6366f1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+      .hshs-user-chip .chip-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .hshs-logout-btn{border:none;background:transparent;cursor:pointer;color:var(--text-muted,#64748b);font-size:.8rem;padding:.2rem;border-radius:6px}
+      #hshs-toast-container{position:fixed;bottom:1.5rem;right:1.5rem;z-index:10000;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
+      .hshs-toast{background:oklch(.25 .03 260);color:#fff;padding:.75rem 1.1rem;border-radius:12px;font-size:.9rem;font-weight:500;box-shadow:0 10px 25px oklch(0 0 0 / .25);opacity:0;transform:translateY(12px);transition:.3s;max-width:340px}
+      .hshs-toast.show{opacity:1;transform:none}
+      .hshs-toast--success{background:oklch(.45 .14 145)}
+      .hshs-toast--error{background:oklch(.5 .18 25)}
+      .hshs-toast--info{background:oklch(.45 .14 250)}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function ensureModal() {
+    if ($("#hshs-auth-overlay")) return;
+    injectStyles();
+    const overlay = document.createElement("div");
+    overlay.id = "hshs-auth-overlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.innerHTML = `
+      <div class="hshs-auth-card">
+        <button type="button" class="hshs-auth-close" id="hshsAuthClose" aria-label="Close">×</button>
+        <div class="hshs-auth-header">
+          <h2 id="hshs-auth-title">Welcome</h2>
+          <p id="hshs-auth-subtitle">Sign in to access your study tools</p>
+        </div>
+        <div class="hshs-auth-tabs">
+          <button type="button" class="hshs-auth-tab active" data-mode="login">Login</button>
+          <button type="button" class="hshs-auth-tab" data-mode="signup">Sign Up</button>
+        </div>
+        <div class="hshs-auth-error" id="hshsAuthError"></div>
+        <form id="hshsAuthForm" novalidate>
+          <div class="hshs-auth-field" id="hshsNameField" hidden>
+            <label for="hshsAuthName">Full name</label>
+            <input type="text" id="hshsAuthName" name="name" placeholder="e.g. Jane Amina" autocomplete="name" maxlength="50" />
+          </div>
+          <div class="hshs-auth-field">
+            <label for="hshsAuthEmail">Email</label>
+            <input type="email" id="hshsAuthEmail" name="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          <div class="hshs-auth-field">
+            <label for="hshsAuthPassword">Password</label>
+            <input type="password" id="hshsAuthPassword" name="password" placeholder="At least 6 characters" autocomplete="current-password" required minlength="6" />
+          </div>
+          <div class="hshs-auth-field" id="hshsCodeField" hidden>
+            <label for="hshsAuthCode">Access Code <span style="color:#ef4444">*</span></label>
+            <input type="text" id="hshsAuthCode" name="code" placeholder="Enter code from your teacher" autocomplete="off" />
+          </div>
+          <button type="submit" class="hshs-auth-submit" id="hshsAuthSubmit">Login</button>
+        </form>
+        <p class="hshs-auth-note" id="hshsAuthNote">This platform is strictly for Hawthorne-Scribner High School students.</p>
+      </div>`;
+    document.body.appendChild(overlay);
+    $("#hshsAuthClose").addEventListener("click", closeModal);
+    overlay.addEventListener("click", (e) => { if (e.target === overlay) closeModal(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.classList.contains("open")) closeModal();
+    });
+    overlay.querySelectorAll(".hshs-auth-tab").forEach((tab) => {
+      tab.addEventListener("click", () => setMode(tab.dataset.mode));
+    });
+    $("#hshsAuthForm").addEventListener("submit", onSubmit);
+  }
+
+  let currentMode = "login";
+
+  function setMode(mode) {
+    currentMode = mode;
+    const isSignup = mode === "signup";
+    $$(".hshs-auth-tab").forEach((t) => t.classList.toggle("active", t.dataset.mode === mode));
+    const nameField = $("#hshsNameField");
+    const codeField = $("#hshsCodeField");
+    if (nameField) nameField.hidden = !isSignup;
+    if (codeField) codeField.hidden = !isSignup;
+    $("#hshs-auth-title").textContent = isSignup ? "Create account" : "Welcome back";
+    $("#hshs-auth-subtitle").textContent = isSignup
+      ? "Join the HSHS Academics Door community"
+      : "Sign in to access your study tools";
+    $("#hshsAuthSubmit").textContent = isSignup ? "Create account" : "Login";
+    $("#hshsAuthPassword").autocomplete = isSignup ? "new-password" : "current-password";
+    const note = $("#hshsAuthNote");
+    if (note) {
+      note.innerHTML = isSignup
+        ? `This platform is <strong>strictly for HSHS students</strong>.<br>Get the Access Code from your class teacher.`
+        : `This platform is strictly for Hawthorne-Scribner High School students.`;
+    }
+    clearError();
+  }
+
+  function openModal(mode = "login") {
+    ensureModal();
+    setMode(mode);
+    $("#hshsAuthForm").reset();
+    clearError();
+    $("#hshs-auth-overlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      const focusId = mode === "signup" ? "hshsAuthName" : "hshsAuthEmail";
+      $(`#${focusId}`)?.focus();
+    }, 50);
+  }
+
+  function closeModal() {
+    const overlay = $("#hshs-auth-overlay");
+    if (!overlay) return;
+    overlay.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function showError(msg) {
+    const el = $("#hshsAuthError");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add("show");
+  }
+  function clearError() {
+    const el = $("#hshsAuthError");
+    if (!el) return;
+    el.textContent = "";
+    el.classList.remove("show");
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    clearError();
+    const name = $("#hshsAuthName")?.value.trim() || "";
+    const email = $("#hshsAuthEmail")?.value.trim().toLowerCase() || "";
+    const password = $("#hshsAuthPassword")?.value || "";
+    const accessCode = $("#hshsAuthCode")?.value.trim() || "";
+
+    if (!validateEmail(email)) { showError("Please enter a valid email address."); return; }
+    if (password.length < 6) { showError("Password must be at least 6 characters."); return; }
+
+    const users = getUsers();
+
+    if (currentMode === "signup") {
+      if (!name || name.length < 2) { showError("Please enter your full name."); return; }
+      if (!isValidAccessCode(accessCode)) {
+        showError("Invalid or missing Access Code. Please get the correct code from your class teacher.");
+        return;
+      }
+      if (users.some((u) => u.email === email)) {
+        showError("An account with this email already exists. Try logging in.");
+        return;
+      }
+      const user = {
+        id: "u" + Date.now(),
+        name,
+        email,
+        passwordHash: hashPassword(password),
+        accessCode: accessCode.toUpperCase(),
+        verified: true,
+        createdAt: new Date().toISOString()
+      };
+      users.push(user);
+      saveUsers(users);
+      setSession(user);
+      closeModal();
+      updateHeader();
+      showToast("Welcome, " + user.name.split(" ")[0] + "! Account created successfully.", "success");
+      window.dispatchEvent(new CustomEvent("hshs:auth", { detail: { user, action: "signup" } }));
+    } else {
+      const user = users.find((u) => u.email === email);
+      if (!user || user.passwordHash !== hashPassword(password)) {
+        showError("Incorrect email or password.");
+        return;
+      }
+      setSession(user);
+      closeModal();
+      updateHeader();
+      showToast("Welcome back, " + user.name.split(" ")[0] + "!", "success");
+      window.dispatchEvent(new CustomEvent("hshs:auth", { detail: { user, action: "login" } }));
+    }
+  }
+
+  function logout() {
+    setSession(null);
+    updateHeader();
+    showToast("You have been logged out.", "info");
+    window.dispatchEvent(new CustomEvent("hshs:auth", { detail: { user: null, action: "logout" } }));
+  }
+
+  function updateHeader() {
+    const session = getSession();
+    const loginBtn = $("#loginBtn");
+    const signupBtn = $("#signupBtn");
+    let chip = $("#hshsUserChip");
+
+    if (session) {
+      if (loginBtn) loginBtn.style.display = "none";
+      if (signupBtn) signupBtn.style.display = "none";
+      if (!chip) {
+        const actions = $(".header-actions");
+        if (actions) {
+          chip = document.createElement("div");
+          chip.id = "hshsUserChip";
+          chip.className = "hshs-user-chip";
+          actions.insertBefore(chip, actions.firstChild);
+        }
+      }
+      if (chip) {
+        const initial = (session.name || "U").charAt(0).toUpperCase();
+        chip.innerHTML = `<span class="chip-avatar">${initial}</span><span class="chip-name">${session.name.split(" ")[0]}</span><button type="button" class="hshs-logout-btn" title="Log out" aria-label="Log out">×</button>`;
+        chip.querySelector(".hshs-logout-btn")?.addEventListener("click", logout);
+      }
+    } else {
+      if (loginBtn) loginBtn.style.display = "";
+      if (signupBtn) signupBtn.style.display = "";
+      chip?.remove();
+    }
+  }
+
+  function wireButtons() {
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest("#loginBtn, a[href=\"login.html\"]");
+      if (t && t.id === "loginBtn") {
+        e.preventDefault();
+        openModal("login");
+      }
+      const s = e.target.closest("#signupBtn, a[href*=\"mode=signup\"]");
+      if (s && (s.id === "signupBtn" || (s.href && s.href.includes("mode=signup")))) {
+        e.preventDefault();
+        openModal("signup");
+      }
+    });
+  }
+
+  function init() {
+    injectStyles();
+    wireButtons();
+    updateHeader();
+  }
+
+  window.HSHSAuth = { openModal, closeModal, logout, getSession, updateHeader };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
